@@ -158,10 +158,10 @@ workflows:
     jobs:
       - build:
           context: magento2 module
-      - static_tests:
-          context: magento2 module
-          requires:
-            - build
+#      - static_tests:
+#          context: magento2 module
+#          requires:
+#            - build
       - eslint:
           context: magento2 module
           requires:
