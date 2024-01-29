@@ -7,7 +7,7 @@
     "require": {
         "php": "~8.1.0||~8.2.0",
         "magento/framework": "*",
-        "magento/checkout": "*"
+        "magento/module-checkout": "*"
     },
     "autoload": {
         "files": [
