@@ -136,7 +136,7 @@ jobs:
       - run:
           name: PHPCS
           command: |
-            ./vendor/bin/phpcs . --standard=Magento2 --ignore=vendor,*.css,Test --extensions=php --colors -s -p -v --runtime-set installed_paths vendor/magento/magento-coding-standard,vendor/phpcompatibility/php-compatibility
+            ./vendor/bin/phpcs vendor/paypal/module-fastlane --standard=Magento2 --ignore=vendor,*.css,Test --extensions=php --colors -s -p -v --runtime-set installed_paths vendor/magento/magento-coding-standard,vendor/phpcompatibility/php-compatibility
       - run:
           name: PHPStan
           command: ./vendor/bin/phpstan analyse
@@ -159,10 +159,10 @@ jobs:
           at: .
       - run:
           name: Npm install
-          command: npm install
+          command: npm --prefix vendor/paypal/module-fastlane i
       - run:
           name: ESLint run
-          command: npm run lint
+          command: npm --prefix vendor/paypal/module-fastlane run lint
 workflows:
   build-test:
     jobs:
