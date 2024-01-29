@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: cimg/php:8.1.7-browsers
+      - image: cimg/php:8.2.15-browsers
       - image: cimg/mariadb:10.4
         environment:
           MYSQL_ROOT_PASSWORD: root
@@ -73,6 +73,17 @@ jobs:
       - run:
           name: Composer Create Project
           command: php -d memory_limit=-1 /usr/local/bin/composer create-project --no-interaction --repository-url=https://repo.magento.com/ magento/project-community-edition=2.4.6 .
+      - restore_cache:
+          keys:
+            - composer-v2-{{ checksum "composer.lock" }}
+      - run:
+          name: Composer Install
+          command: |
+            composer install --prefer-source --no-interaction --dev
+      - save_cache:
+          key: composer-v2-{{ checksum "composer.lock" }}
+          paths:
+            - vendor
       - run:
           name: Install Module @ CI Build Branch/Commit
           command: |
@@ -87,10 +98,10 @@ jobs:
             --db-name=m2build \
             --db-user=root \
             --db-password=root \
-            --admin-firstname=Josh \
-            --admin-lastname=Carter \
-            --admin-email=josh.carter@gene.co.uk \
-            --admin-user=josh \
+            --admin-firstname=Ivan \
+            --admin-lastname=Prysiazhniuk \
+            --admin-email=ivan@gene.co.uk \
+            --admin-user=ivan \
             --admin-password=password1 \
             --language=en_GB \
             --currency=GBP \
@@ -108,66 +119,20 @@ jobs:
       - run:
           name: DI Compile
           command: php -d memory_limit=-1 bin/magento setup:di:compile
+      - run:
+          name: Install npm
+          command: cp package.json.sample package.json && npm install
       - persist_to_workspace:
           root: .
           paths:
             - ./*
   static_tests:
     docker:
-      - image: cimg/php:8.1.7-browsers
+      - image: cimg/php:8.2.15-browsers
     working_directory: ~/static-tests
     steps:
-      - checkout
-      - run:
-          name: Install System Packages
-          command: |
-            sudo apt-get update -y && sudo apt-get install -y \
-            cron \
-            git \
-            gzip \
-            libbz2-dev \
-            libfreetype6-dev \
-            libicu-dev \
-            libjpeg-dev \
-            libmcrypt-dev \
-            libonig-dev \
-            libpng-dev \
-            libsodium-dev \
-            libssh2-1-dev \
-            libxslt1-dev \
-            libzip-dev \
-            lsof \
-            default-mysql-client \
-            vim \
-            zip \
-            zlib1g-dev \
-            sendmail \
-            procps \
-            nginx
-      - run:
-          name: Install PHP Packages
-          command: |
-            sudo docker-php-ext-install \
-            sysvshm \
-            xsl
-            sudo composer self-update
-      - restore_cache:
-          keys:
-            - composer-v2-{{ checksum "composer.lock" }}
-            - composer-v2-
-      - run:
-          name: Composer Configure
-          command: |
-            composer config -g http-basic.repo.magento.com $MAGENTO_REPO_KEY $MAGENTO_REPO_SECRET
-            composer config -g http-basic.repo.packagist.com "token" $GENE_PACKAGIST_TOKEN
-      - run:
-          name: Composer Install
-          command: |
-            composer install --prefer-source --no-interaction --dev
-      - save_cache:
-          key: composer-v2-{{ checksum "composer.lock" }}
-          paths:
-            - vendor
+      - attach_workspace:
+            at: .
       - run:
           name: PHPCS
           command: |
@@ -186,8 +151,28 @@ jobs:
           path: ~/phpunit
       - store_artifacts:
           path: ~/phpunit
+  eslint:
+    docker:
+      - image: cimg/node:21.6.1
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Npm install
+          command: npm install
+      - run:
+          name: ESLint run
+          command: npm run lint
 workflows:
   build-test:
     jobs:
       - build:
           context: magento2 module
+      - static_tests:
+          context: magento2 module
+          requires:
+            - build
+      - eslint:
+          context: magento2 module
+          requires:
+            - build
