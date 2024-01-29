@@ -8,7 +8,8 @@
         "php": "~8.1.0||~8.2.0",
         "magento/framework": "*",
         "magento/module-checkout": "*",
-        "paypal/module-braintree-core": "*"
+        "paypal/module-braintree-core": "*",
+        "phpcompatibility/php-compatibility": "*"
     },
     "autoload": {
         "files": [
@@ -17,5 +18,10 @@
         "psr-4": {
             "PayPal\\Fastlane\\": ""
         }
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "([ $COMPOSER_DEV_MODE -eq 0 ] || ../../../../vendor/bin/phpcs --config-set installed_paths ../../../../vendor/magento/magento-coding-standard/,../../../../vendor/phpcompatibility/php-compatibility)"
+        ]
     }
 }

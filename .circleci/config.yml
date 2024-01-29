@@ -73,17 +73,10 @@ jobs:
       - run:
           name: Composer Create Project
           command: php -d memory_limit=-1 /usr/local/bin/composer create-project --no-interaction --repository-url=https://repo.magento.com/ magento/project-community-edition=2.4.6 .
-      - restore_cache:
-          keys:
-            - composer-v2-{{ checksum "composer.lock" }}
       - run:
           name: Composer Install
           command: |
             composer install --prefer-source --no-interaction --dev
-      - save_cache:
-          key: composer-v2-{{ checksum "composer.lock" }}
-          paths:
-            - vendor
       - run:
           name: Install Module @ CI Build Branch/Commit
           command: |
