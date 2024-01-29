@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="payment">
+            <group id="braintree_section">
+                <group id="braintree">
+                    <group id="braintree_required">
+                        <field id="is_active" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Use PayPal Connect</label>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                            <config_path>payment/paypal_connect/is_active</config_path>
+                        </field>
+                        <field id="show_branding" translate="label" type="select" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Show PayPal Connect branding</label>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                            <config_path>payment/paypal_connect/show_branding</config_path>
+                            <depends>
+                                <field id="is_active">1</field>
+                            </depends>
+                        </field>
+                        <field id="debug_mode" translate="label" type="select" sortOrder="150" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Debug mode</label>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                            <config_path>payment/paypal_connect/debug_mode</config_path>
+                            <depends>
+                                <field id="is_active">1</field>
+                            </depends>
+                        </field>
+                    </group>
+                </group>
+            </group>
+        </section>
+    </system>
+</config>
