@@ -112,9 +112,6 @@ jobs:
       - run:
           name: DI Compile
           command: php -d memory_limit=-1 bin/magento setup:di:compile
-      - run:
-          name: Install npm
-          command: cp package.json.sample package.json && npm install
       - persist_to_workspace:
           root: .
           paths:
