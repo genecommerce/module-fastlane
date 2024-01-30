@@ -59,8 +59,18 @@ define([
             return this.fastlaneInstance.identity.triggerAuthenticationFlow(customerContextId);
         },
 
-        connectCardComponent: function (id) {
-            this.fastlaneInstance.ConnectCardComponent().render(id);
+        renderConnectCardComponent: function (selector) {
+            if (this.fastlaneInstance) {
+                this.fastlaneInstance.ConnectCardComponent().render(selector);
+            }
+        },
+
+        renderConnectWatermarkComponent: function (selector) {
+            if (this.fastlaneInstance) {
+                this.fastlaneInstance.ConnectWatermarkComponent({
+                    includeAdditionalInfo: true
+                }).render(selector);
+            }
         }
     };
 });
