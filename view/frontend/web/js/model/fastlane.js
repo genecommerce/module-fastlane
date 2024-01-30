@@ -21,11 +21,14 @@ define([
 
             this.clientInstance = clientInstance;
 
-            const options = {
-                client: clientInstance
-            };
+            return this.createDataCollectorInstance(this.clientInstance);
+        },
 
-            const dataCollectorInstance = await dataCollector.create(options);
+        createDataCollectorInstance: async function (clientInstance) {
+            const options = {
+                    client: clientInstance
+                },
+                dataCollectorInstance = await dataCollector.create(options);
 
             this.deviceData = dataCollectorInstance.deviceData;
         },
@@ -59,5 +62,5 @@ define([
         connectCardComponent: function (id) {
             this.fastlaneInstance.ConnectCardComponent().render(id);
         }
-    }
+    };
 });

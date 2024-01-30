@@ -2,7 +2,7 @@ var config = {
     config: {
         mixins: {
             'Magento_Checkout/js/view/form/element/email': {
-                'PayPal_Fastlane/js/view/form/element/email-mixin': true,
+                'PayPal_Fastlane/js/view/form/element/email-mixin': true
             }
         }
     },
