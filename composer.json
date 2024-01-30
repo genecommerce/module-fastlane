@@ -1,5 +1,5 @@
 {
-    "name": "paypal/module-fastlane",
+    "name": "genecommerce/module-fastlane",
     "description": "Implementation of PayPal Fastlane",
     "type": "magento2-module",
     "license": "proprietary",
