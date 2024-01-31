@@ -1,4 +1,12 @@
 var config = {
+    config: {
+        mixins: {
+            'Magento_Checkout/js/view/form/element/email': {
+                'PayPal_Fastlane/js/view/form/element/email-mixin': true
+            }
+        }
+    },
+
     map: {
         '*': {
             braintree: 'https://js.braintreegateway.com/web/3.97.4-connect-alpha.6.3/js/client.min.js'
@@ -15,6 +23,7 @@ var config = {
         'braintreeGooglePay': 'https://js.braintreegateway.com/web/3.97.4-connect-alpha.6.3/js/google-payment.min',
         'braintreeVenmo': 'https://js.braintreegateway.com/web/3.97.4-connect-alpha.6.3/js/venmo.min',
         'braintreeAch': 'https://js.braintreegateway.com/web/3.97.4-connect-alpha.6.3/js/us-bank-account.min',
-        'braintreeLpm': 'https://js.braintreegateway.com/web/3.97.4-connect-alpha.6.3/js/local-payment.min'
+        'braintreeLpm': 'https://js.braintreegateway.com/web/3.97.4-connect-alpha.6.3/js/local-payment.min',
+        'braintreeFastlane': 'https://js.braintreegateway.com/web/3.97.4-connect-alpha.6.3/js/connect.min'
     }
 };
