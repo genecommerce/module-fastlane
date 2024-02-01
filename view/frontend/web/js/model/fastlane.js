@@ -9,17 +9,16 @@ define([
         clientInstance: null,
         fastlaneInstance: null,
         deviceData: null,
+        runningSetup: null,
 
         getClientToken: function () {
             return window.checkoutConfig.payment.braintree.clientToken;
         },
 
         createClientInstance: async function () {
-            const clientInstance = await client.create({
+            this.clientInstance = await client.create({
                 authorization: this.getClientToken()
             });
-
-            this.clientInstance = clientInstance;
 
             return this.createDataCollectorInstance(this.clientInstance);
         },
@@ -42,13 +41,23 @@ define([
         },
 
         setup: async function () {
-            if (!this.clientInstance) {
-                await this.createClientInstance();
+            if (this.runningSetup) {
+                return this.runningSetup;
             }
 
-            if (!this.fastlaneInstance) {
-                await this.createFastlaneInstance();
-            }
+            this.runningSetup = new Promise(async (resolve) => {
+                if (!this.clientInstance) {
+                    await this.createClientInstance();
+                }
+
+                if (!this.fastlaneInstance) {
+                    await this.createFastlaneInstance();
+                }
+
+                resolve();
+            });
+
+            return this.runningSetup;
         },
 
         lookupCustomerByEmail: function (email) {
