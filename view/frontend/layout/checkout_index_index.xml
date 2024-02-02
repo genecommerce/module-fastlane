@@ -19,10 +19,25 @@
                                                                 <item name="paypal-fastlane-email-watermark" xsi:type="array">
                                                                     <item name="component" xsi:type="string">PayPal_Fastlane/js/view/form/element/powered-by</item>
                                                                     <item name="displayArea" xsi:type="string">paypal-fastlane-email-watermark</item>
+                                                                    <item name="id" xsi:type="string">paypal-fastlane-email-watermark</item>
                                                                 </item>
                                                             </item>
                                                         </item>
                                                     </item>
+                                                </item>
+                                            </item>
+                                        </item>
+                                    </item>
+                                </item>
+                                <item name="sidebar" xsi:type="array">
+                                    <item name="children" xsi:type="array">
+                                        <item name="shipping-information" xsi:type="array">
+                                            <item name="template" xsi:type="string">PayPal_Fastlane/shipping-information</item>
+                                            <item name="children" xsi:type="array">
+                                                <item name="paypal-fastlane-shipping-watermark" xsi:type="array">
+                                                    <item name="component" xsi:type="string">PayPal_Fastlane/js/view/form/element/powered-by</item>
+                                                    <item name="displayArea" xsi:type="string">paypal-fastlane-shipping-watermark</item>
+                                                    <item name="id" xsi:type="string">paypal-fastlane-shipping-watermark</item>
                                                 </item>
                                             </item>
                                         </item>

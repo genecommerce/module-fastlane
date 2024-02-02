@@ -8,6 +8,7 @@ define([
     return {
         clientInstance: null,
         fastlaneInstance: null,
+        fastlaneCardComponent: null,
         deviceData: null,
         runningSetup: null,
 
@@ -68,9 +69,15 @@ define([
             return this.fastlaneInstance.identity.triggerAuthenticationFlow(customerContextId);
         },
 
-        renderConnectCardComponent: function (selector) {
+        renderConnectCardComponent: async function (selector) {
             if (this.fastlaneInstance) {
-                this.fastlaneInstance.ConnectCardComponent().render(selector);
+                this.fastlaneCardComponent = await this.fastlaneInstance.ConnectCardComponent().render(selector);
+            }
+        },
+
+        displayChangeCard: function () {
+            if (this.fastlaneCardComponent) {
+                this.fastlaneInstance.profile.showCardSelector();
             }
         },
 

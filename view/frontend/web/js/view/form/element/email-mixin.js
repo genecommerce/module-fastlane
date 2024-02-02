@@ -4,9 +4,10 @@ define([
     'Magento_Customer/js/model/address-list',
     'Magento_Customer/js/model/customer/address',
     'Magento_Checkout/js/model/shipping-service',
+    'Magento_Checkout/js/model/step-navigator',
     'PayPal_Fastlane/js/model/fastlane',
     'PayPal_Fastlane/js/helpers/get-region-id'
-], function (uiRegistry, $, addressList, Address, shippingService, fastlaneModel, getRegionId) {
+], function (uiRegistry, $, addressList, Address, shippingService, stepsNavigator, fastlaneModel, getRegionId) {
     'use strict';
 
     var mixin = {
@@ -17,6 +18,11 @@ define([
          */
         checkEmailAvailability: async function () {
             this._super();
+
+            // Early return if we are already on the payment page.
+            if (stepsNavigator.getActiveItemIndex() !== 0) {
+                return;
+            }
 
             // Fastlane requires a localStorage key set to determine which environment to use.
             window.localStorage.setItem('axoEnv', window.checkoutConfig.payment.braintree.environment);
@@ -32,6 +38,7 @@ define([
 
                 const { profileData } = await fastlaneModel.triggerAuthenticationFlow(customerContextId);
 
+                console.log(profileData);
                 // With a street address we can begin processing the User to auto-populate the data in the checkout.
                 if (profileData?.shippingAddress?.streetAddress) {
                     this.processUserData(profileData);
@@ -75,6 +82,8 @@ define([
             // Push the mapped address into the correct models which will trigger getting the updated shipping methods.
             addressList.push(mappedAddress);
             this.addAddressToCheckoutProvider(mappedAddress);
+
+            $(document.body).trigger('processStop');
         },
 
         /**

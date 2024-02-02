@@ -14,15 +14,17 @@ define([
          *
          * @returns {Object} Chainable.
          */
-        initConfig: async function () {
+        initConfig: async function (config) {
             this._super();
 
-            // TODO: Check the window.checkoutConfig to see if branding is enabled.
-            await fastlaneModel.setup();
-
-            fastlaneModel.renderConnectWatermarkComponent('#paypal-fastlane-powered-by');
+            this.id = config.id;
 
             return this;
+        },
+
+        renderWatermark: async function () {
+            await fastlaneModel.setup();
+            fastlaneModel.renderConnectWatermarkComponent(`#${this.id}`);
         }
     });
 });
