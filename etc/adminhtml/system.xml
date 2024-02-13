@@ -19,7 +19,15 @@
                                 <field id="is_active">1</field>
                             </depends>
                         </field>
-                        <field id="debug_mode" translate="label" type="select" sortOrder="150" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="show_cardholder_name" translate="label" type="select" sortOrder="150" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Show Cardholder name</label>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                            <config_path>payment/paypal_connect/show_cardholder_name</config_path>
+                            <depends>
+                                <field id="is_active">1</field>
+                            </depends>
+                        </field>
+                        <field id="debug_mode" translate="label" type="select" sortOrder="160" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Debug mode</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                             <config_path>payment/paypal_connect/debug_mode</config_path>
