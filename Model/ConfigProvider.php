@@ -44,6 +44,15 @@ class ConfigProvider implements ConfigProviderInterface
         );
     }
 
+    public function getShowCardholderName(int|string|null $storeId = null): bool
+    {
+        return $this->scopeConfig->isSetFlag(
+            self::XML_PATH_PAYPAL_CONNECT_SHOW_CARDHOLDER,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
     /**
      * @param int|string|null $storeId
      * @return bool
