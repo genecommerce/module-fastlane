@@ -6,10 +6,10 @@ namespace PayPal\Fastlane\Api;
 
 interface ConfigProviderInterface
 {
-    public const XML_PATH_PAYPAL_CONNECT_IS_ACTIVE = "payment/paypal_connect/is_active";
-    public const XML_PATH_PAYPAL_CONNECT_SHOW_BRANDING = "payment/paypal_connect/show_branding";
-    public const XML_PATH_PAYPAL_CONNECT_SHOW_CARDHOLDER = "payment/paypal_connect/show_cardholder_name";
-    public const XML_PATH_PAYPAL_CONNECT_DEBUG_MODE = "payment/paypal_connect/debug_mode";
+    public const XML_PATH_FASTLANE_IS_ACTIVE = "payment/fastlane/is_active";
+    public const XML_PATH_FASTLANE_SHOW_BRANDING = "payment/fastlane/show_branding";
+    public const XML_PATH_FASTLANE_SHOW_CARDHOLDER = "payment/fastlane/show_cardholder_name";
+    public const XML_PATH_FASTLANE_DEBUG_MODE = "payment/fastlane/debug_mode";
 
     /**
      * @param int|string|null $storeId
