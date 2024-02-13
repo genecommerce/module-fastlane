@@ -19,10 +19,12 @@
             <!-- ko template: getTemplate() --><!-- /ko -->
             <!--/ko-->
         </div>
-        <div class="paypal-fastlane-container">
-            <button class="abs-action-remove paypal-fastlane-edit" data-bind="click: changePayment">
-                <span data-bind="i18n: 'edit'"></span>
-            </button>
+        <div class="paypal-fastlane-container" data-bind="css: { 'paypal-fastlane-has-account': profileData() }">
+            <!-- ko if: profileData() -->
+                <button class="abs-action-remove paypal-fastlane-edit" data-bind="click: changePayment">
+                    <span data-bind="i18n: 'edit'"></span>
+                </button>
+            <!--/ko-->
             <div id="paypal-fastlane-payment"></div>
         </div>
         <div class="checkout-agreements-block">
@@ -48,5 +50,8 @@
                 </button>
             </div>
         </div>
+
+        <input type="hidden" data-bind="attr: {'id': `${getCode()}_payment_method_nonce`}"
+            name="payment[payment_method_nonce]"/>
     </div>
 </div>
