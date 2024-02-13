@@ -22,15 +22,16 @@ class ConfigProvider implements CheckoutConfigProviderInterface
      */
     public function getConfig(): array
     {
-        if (!$this->configProvider->isPayPalConnectActive()) {
-            return [];
-        }
-
-        return [
+        $config = [
             'fastlane' => [
-                'show_branding' => $this->configProvider->getShowBranding(),
-                'show_cardholder_name' => $this->configProvider->getShowCardholderName()
+                'is_active' => $this->configProvider->isPayPalConnectActive()
             ]
         ];
+
+        if ($this->configProvider->isPayPalConnectActive()) {
+            $config['fastlane']['show_branding'] = $this->configProvider->getShowBranding();
+            $config['fastlane']['show_cardholder_name'] = $this->configProvider->getShowCardholderName();
+        }
+        return $config;
     }
 }
