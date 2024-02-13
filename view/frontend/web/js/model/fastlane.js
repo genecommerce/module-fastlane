@@ -5,6 +5,7 @@ define([
     'Magento_Checkout/js/model/quote',
     'Magento_Checkout/js/action/select-payment-method',
     'Magento_Checkout/js/action/set-shipping-information',
+    'Magento_Checkout/js/checkout-data',
     'Magento_Customer/js/model/address-list',
     'Magento_Checkout/js/model/shipping-service',
     'Magento_Checkout/js/model/step-navigator',
@@ -12,7 +13,7 @@ define([
     'braintreeDataCollector',
     'braintreeFastlane',
     'PayPal_Fastlane/js/helpers/map-address'
-], function ($, ko, uiRegistry, quote, selectPaymentMethodAction, setShippingInformationAction,
+], function ($, ko, uiRegistry, quote, selectPaymentMethodAction, setShippingInformationAction, checkoutData,
     addressList, shippingService, stepNavigator, client, dataCollector, brainteeFastlane, mapAddress) {
     'use strict';
 
@@ -107,12 +108,28 @@ define([
                     await this.createFastlaneInstance();
                 }
 
+                const email = checkoutData.getInputFieldEmailValue();
+
+                // If we have an email address already then try the lookup.
+                if (email) {
+                    await this.lookupCustomerByEmail(email);
+                }
+
                 resolve();
             });
 
             return this.runningSetup;
         },
 
+        /**
+         * Run the lookup for an email address within Fastlane.
+         *
+         * This will reset data within this.profileData and this.customerContextId and then trigger
+         * another authentication if a new account is found.
+         *
+         * @param {string} email
+         * @returns {void}
+         */
         lookupCustomerByEmail: async function (email) {
             $(document.body).trigger('processStart');
 
@@ -131,10 +148,15 @@ define([
             if (this.customerContextId) {
                 return this.triggerAuthenticationFlow();
             }
-
-            return null;
         },
 
+        /**
+         * Trigger the authentication flow within Fastlane.
+         *
+         * Once the User has finished the action the information will be available within this.profileData.
+         *
+         * @returns {void}
+         */
         triggerAuthenticationFlow: async function () {
             $(document.body).trigger('processStart');
             const { profileData }
@@ -152,20 +174,38 @@ define([
             }
         },
 
+        /**
+         * Renders the Fastlane card component inside the given css selector.
+         *
+         * @param {string} selector The css selector where to render the card component.
+         * @returns {void}
+         */
         renderConnectCardComponent: async function (selector) {
             if (this.fastlaneInstance) {
                 const fields = {
                     phoneNumber: {
                         prefill: this.profileData()?.shippingAddress?.phoneNumber || ''
-                    },
-                    cardholderName: {}  // TODO: Get this from config.
+                    }
                 };
+
+                // Add the card holder name field if enabled in config.
+                if (window.checkoutConfig.fastlane.show_cardholder_name) {
+                    fields.cardholderName = {};
+                }
 
                 this.fastlaneCardComponent = await this.fastlaneInstance
                     .ConnectCardComponent({ fields }).render(selector);
             }
         },
 
+        /**
+         * Shows the address Fastlane address selector.
+         *
+         * When the User selects a new address this will automatically call `processUserData` with the updated
+         * information.
+         *
+         * @returns {void}
+         */
         displayChangeShipping: async function () {
             if (this.fastlaneInstance.profile) {
                 $(document.body).trigger('processStart');
@@ -184,6 +224,14 @@ define([
             }
         },
 
+        /**
+         * Displays the change card component from Fastlane.
+         *
+         * When a User updates their card information this will automatically pass this into the appropriate
+         * quote models to update their billing address and card.
+         *
+         * @returns {void}
+         */
         displayChangeCard: async function () {
             if (this.fastlaneCardComponent) {
                 const { selectionChanged, selectedCard } = await this.fastlaneInstance.profile.showCardSelector();
@@ -199,6 +247,11 @@ define([
             }
         },
 
+        /**
+         * Renders the Fastlane watermark into the given selector.
+         * @param {string} selector The css selector where to render the watermark component.
+         * @returns {void}
+         */
         renderConnectWatermarkComponent: function (selector) {
             if (this.fastlaneInstance) {
                 this.fastlaneInstance.ConnectWatermarkComponent({
@@ -214,6 +267,7 @@ define([
          * @param {Object} [profileData.card] - Optional card data object.
          * @param {Object} [profileData.name] - Optional name data object.
          * @param {Object} [profileData.shippingAddress] - Optional shipping address object.
+         * @returns {void}
          */
         processUserData: async function (profileData) {
             // Clean up any existing subscriptions so we don't add more than one at a time.
@@ -264,6 +318,7 @@ define([
 
         /**
          * Redirects the User back to the shipping step.
+         * @returns {void}
          */
         redirectToShipping: function () {
             stepNavigator.setHash('shipping');
@@ -274,6 +329,7 @@ define([
          * Push the new address into the checkout provider.
          *
          * @param {Object} address - A complete address object in the correct Adobe Commerce format.
+         * @returns {void}
          */
         addAddressToCheckoutProvider: function (address) {
             const checkoutProvider = uiRegistry.get('checkoutProvider'),

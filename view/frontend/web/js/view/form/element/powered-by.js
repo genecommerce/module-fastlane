@@ -1,8 +1,9 @@
 define([
     'uiComponent',
-    'Magento_Customer/js/model/customer',
+    'PayPal_Fastlane/js/helpers/is-branding-enabled',
+    'PayPal_Fastlane/js/helpers/is-fastlane-available',
     'PayPal_Fastlane/js/model/fastlane'
-], function (Component, customer, fastlaneModel) {
+], function (Component, isBrandingEnabled, isFastlaneAvailable, fastlaneModel) {
     'use strict';
 
     return Component.extend({
@@ -27,8 +28,13 @@ define([
         },
 
         renderWatermark: async function () {
-            // Early return if the customer is logged in.
-            if (customer.isLoggedIn()) {
+            // Early return if branding is disabled.
+            if (!isBrandingEnabled()) {
+                return;
+            }
+
+            // Early return if Fastlane is not available.
+            if (!isFastlaneAvailable()) {
                 return false;
             }
 

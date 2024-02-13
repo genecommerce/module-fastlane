@@ -1,7 +1,7 @@
 define([
-    'Magento_Customer/js/model/customer',
+    'PayPal_Fastlane/js/helpers/is-fastlane-available',
     'PayPal_Fastlane/js/model/fastlane'
-] ,function (customer, fastlaneModel) {
+] ,function (isFastlaneAvailable, fastlaneModel) {
     'use strict';
 
     var mixin = {
@@ -15,8 +15,8 @@ define([
         initialize: function () {
             this._super();
 
-            // Early return if the customer is logged in.
-            if (customer.isLoggedIn()) {
+            // Early return if Fastlane is not available.
+            if (!isFastlaneAvailable()) {
                 return this;
             }
 
@@ -27,8 +27,8 @@ define([
         },
 
         placeOrderClick: async function () {
-            // If the customer is logged in then run the standard hosted fields order.
-            if (customer.isLoggedIn()) {
+            // If Fastlane is not available then run the standard hosted fields order.
+            if (!isFastlaneAvailable()) {
                 return this._super();
             }
 

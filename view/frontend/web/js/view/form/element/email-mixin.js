@@ -1,8 +1,8 @@
 define([
-    'Magento_Customer/js/model/customer',
     'Magento_Checkout/js/model/step-navigator',
+    'PayPal_Fastlane/js/helpers/is-fastlane-available',
     'PayPal_Fastlane/js/model/fastlane'
-], function (customer, stepsNavigator, fastlaneModel) {
+], function (stepsNavigator, isFastlaneAvailable, fastlaneModel) {
     'use strict';
 
     var mixin = {
@@ -14,8 +14,8 @@ define([
         checkEmailAvailability: async function () {
             this._super();
 
-            // Early return if the customer is logged in.
-            if (customer.isLoggedIn()) {
+            // Early return if Fastlane is not available
+            if (!isFastlaneAvailable()) {
                 return;
             }
 
