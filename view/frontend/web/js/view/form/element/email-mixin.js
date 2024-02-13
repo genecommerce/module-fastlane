@@ -24,9 +24,6 @@ define([
                 return;
             }
 
-            // Fastlane requires a localStorage key set to determine which environment to use.
-            window.localStorage.setItem('axoEnv', window.checkoutConfig.payment.braintree.environment);
-
             await fastlaneModel.setup();
 
             // Check the entered email against Fastlane to see if we have an account.

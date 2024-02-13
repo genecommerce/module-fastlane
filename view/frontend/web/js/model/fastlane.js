@@ -100,6 +100,9 @@ define([
             }
 
             this.runningSetup = new Promise(async (resolve) => {
+                // Fastlane requires a localStorage key set to determine which environment to use.
+                window.localStorage.setItem('axoEnv', window.checkoutConfig.payment?.braintree?.environment);
+
                 if (!this.clientInstance) {
                     await this.createClientInstance();
                 }
