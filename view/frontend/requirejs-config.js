@@ -3,6 +3,15 @@ var config = {
         mixins: {
             'Magento_Checkout/js/view/form/element/email': {
                 'PayPal_Fastlane/js/view/form/element/email-mixin': true
+            },
+            'Magento_Checkout/js/view/shipping-information': {
+                'PayPal_Fastlane/js/view/shipping-information-mixin': true
+            },
+            'PayPal_Braintree/js/view/payment/adapter': {
+                'PayPal_Fastlane/js/view/payment/adapter-mixin': true
+            },
+            'PayPal_Braintree/js/view/payment/method-renderer/hosted-fields': {
+                'PayPal_Fastlane/js/view/payment/method-renderer/hosted-fields-mixin': true
             }
         }
     },

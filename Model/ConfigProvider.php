@@ -25,7 +25,7 @@ class ConfigProvider implements ConfigProviderInterface
     public function isPayPalConnectActive(int|string|null $storeId = null): bool
     {
         return $this->scopeConfig->isSetFlag(
-            self::XML_PATH_PAYPAL_CONNECT_IS_ACTIVE,
+            self::XML_PATH_FASTLANE_IS_ACTIVE,
             ScopeInterface::SCOPE_STORE,
             $storeId
         );
@@ -38,7 +38,7 @@ class ConfigProvider implements ConfigProviderInterface
     public function getShowBranding(int|string|null $storeId = null): bool
     {
         return $this->scopeConfig->isSetFlag(
-            self::XML_PATH_PAYPAL_CONNECT_SHOW_BRANDING,
+            self::XML_PATH_FASTLANE_SHOW_BRANDING,
             ScopeInterface::SCOPE_STORE,
             $storeId
         );
@@ -47,7 +47,7 @@ class ConfigProvider implements ConfigProviderInterface
     public function getShowCardholderName(int|string|null $storeId = null): bool
     {
         return $this->scopeConfig->isSetFlag(
-            self::XML_PATH_PAYPAL_CONNECT_SHOW_CARDHOLDER,
+            self::XML_PATH_FASTLANE_SHOW_CARDHOLDER,
             ScopeInterface::SCOPE_STORE,
             $storeId
         );
@@ -60,7 +60,7 @@ class ConfigProvider implements ConfigProviderInterface
     public function isDebugModeEnabled(int|string|null $storeId = null): bool
     {
         return $this->scopeConfig->isSetFlag(
-            self::XML_PATH_PAYPAL_CONNECT_DEBUG_MODE,
+            self::XML_PATH_FASTLANE_DEBUG_MODE,
             ScopeInterface::SCOPE_STORE,
             $storeId
         );

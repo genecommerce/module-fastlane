@@ -1,1 +1,3 @@
-<div id="paypal-fastlane-powered-by"></div>
+<!-- ko if: (id === 'paypal-fastlane-email-watermark' || profileData()) -->
+<div data-bind="attr: { id: id }" class="paypal-fastlane-powered-by" afterRender="renderWatermark"></div>
+<!--/ko-->
