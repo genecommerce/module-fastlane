@@ -1,7 +1,8 @@
 define([
+    'Magento_Checkout/js/model/payment/additional-validators',
     'PayPal_Fastlane/js/helpers/is-fastlane-available',
     'PayPal_Fastlane/js/model/fastlane'
-] ,function (isFastlaneAvailable, fastlaneModel) {
+] ,function (additionalValidators, isFastlaneAvailable, fastlaneModel) {
     'use strict';
 
     var mixin = {
@@ -32,13 +33,8 @@ define([
                 return this._super();
             }
 
-            const { nonce } = fastlaneModel.selectedCard
-                ? { nonce: fastlaneModel.selectedCard.id }
-                : await fastlaneModel.tokenizePayment();
-
-            if (nonce) {
-                this.paymentMethodNonce = nonce;
-                this.placeOrder('parent');
+            if (additionalValidators.validate()) {
+                this.placeOrder();
             }
         },
 
