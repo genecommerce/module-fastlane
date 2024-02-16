@@ -20,6 +20,21 @@ define([
             $(document.body).trigger('processStop');
         });
 
+        adapter.tokenizeHostedFields = wrapper.wrapSuper(adapter.tokenizeHostedFields, async function () {
+            // Early return if Fastlane is not available.
+            if (!isFastlaneAvailable()) {
+                this._super();
+                return;
+            }
+
+            const response = await fastlaneModel.tokenizePayment();
+
+            // Map the bin response from Fastlane to what is expected by Braintree core.
+            response.details.bin = response.binData;
+
+            this.config.onPaymentMethodReceived(response);
+        });
+
         return adapter;
     };
 });
