@@ -1,6 +1,13 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
+        <referenceContainer name="head.additional">
+            <block template="PayPal_Fastlane::insights-checkout.phtml" ifconfig="payment/fastlane/insights_enabled">
+                <arguments>
+                    <argument name="braintree_config_view_model" xsi:type="object">PayPal\Fastlane\ViewModel\BraintreeConfig</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
         <referenceBlock name="checkout.root">
             <arguments>
                 <argument name="jsLayout" xsi:type="array">

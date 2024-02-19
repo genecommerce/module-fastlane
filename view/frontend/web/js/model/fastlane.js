@@ -187,7 +187,8 @@ define([
             if (this.fastlaneInstance) {
                 const fields = {
                     phoneNumber: {
-                        prefill: this.profileData()?.shippingAddress?.phoneNumber || ''
+                        prefill: this.profileData()?.shippingAddress?.phoneNumber
+                            || quote.billingAddress().telephone || ''
                     }
                 };
 

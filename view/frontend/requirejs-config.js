@@ -33,6 +33,7 @@ var config = {
         'braintreeVenmo': 'https://js.braintreegateway.com/web/3.97.4-connect-alpha.6.3/js/venmo.min',
         'braintreeAch': 'https://js.braintreegateway.com/web/3.97.4-connect-alpha.6.3/js/us-bank-account.min',
         'braintreeLpm': 'https://js.braintreegateway.com/web/3.97.4-connect-alpha.6.3/js/local-payment.min',
-        'braintreeFastlane': 'https://js.braintreegateway.com/web/3.97.4-connect-alpha.6.3/js/connect.min'
+        'braintreeFastlane': 'https://js.braintreegateway.com/web/3.97.4-connect-alpha.6.3/js/connect.min',
+        'payPalInsights': 'https://www.paypalobjects.com/insights/v1/paypal-insights.sandbox.min'
     }
 };

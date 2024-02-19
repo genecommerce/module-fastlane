@@ -1,0 +1,18 @@
+<?php
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ */
+
+/** @var \PayPal\Fastlane\ViewModel\BraintreeConfig $brainteeConfigViewModel */
+$brainteeConfigViewModel = $block->getData('braintree_config_view_model');
+
+?>
+<script type="text/x-magento-init">
+{
+    "*": {
+        "PayPal_Fastlane/js/insights-checkout": {
+            "merchantId": "<?= /* @noEscape */ $brainteeConfigViewModel->getMerchantId() ?>"
+        }
+    }
+}
+</script>
