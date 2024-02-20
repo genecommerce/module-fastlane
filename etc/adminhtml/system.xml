@@ -8,12 +8,12 @@
                     <group id="paypal_fastlane" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="75">
                         <label>Fastlane</label>
                         <frontend_model>Magento\Config\Block\System\Config\Form\Fieldset</frontend_model>
-                        <field id="is_active" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="is_active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Use Fastlane by PayPal</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                             <config_path>payment/fastlane/is_active</config_path>
                         </field>
-                        <field id="show_branding" translate="label" type="select" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="show_branding" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Show Fastlane branding</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                             <config_path>payment/fastlane/show_branding</config_path>
@@ -21,7 +21,7 @@
                                 <field id="is_active">1</field>
                             </depends>
                         </field>
-                        <field id="show_cardholder_name" translate="label" type="select" sortOrder="150" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="show_cardholder_name" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Show Cardholder name</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                             <config_path>payment/fastlane/show_cardholder_name</config_path>
@@ -29,7 +29,7 @@
                                 <field id="is_active">1</field>
                             </depends>
                         </field>
-                        <field id="insights_enabled" translate="label" type="select" sortOrder="160" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="insights_enabled" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Enable Insights</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                             <config_path>payment/fastlane/insights_enabled</config_path>
@@ -37,7 +37,14 @@
                                 <field id="is_active">1</field>
                             </depends>
                         </field>
-                        <field id="debug_mode" translate="label" type="select" sortOrder="170" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="client_id" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Client ID</label>
+                            <config_path>payment/fastlane/client_id</config_path>
+                            <depends>
+                                <field id="insights_enabled">1</field>
+                            </depends>
+                        </field>
+                        <field id="debug_mode" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Debug mode</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                             <config_path>payment/fastlane/debug_mode</config_path>

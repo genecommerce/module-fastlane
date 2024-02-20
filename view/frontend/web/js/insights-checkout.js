@@ -10,11 +10,9 @@ define([
         const maskedId = getMaskedId();
 
         if (maskedId) {
-            // TODO: Can we actually get client ID?
-            const clientId = 'TEST_ID',
-                totals = quote.totals();
+            const totals = quote.totals();
 
-            addInsightsEvent('config', clientId, { merchant_id: config.merchantId });
+            addInsightsEvent('config', config.clientId, { merchant_id: config.merchantId });
             addInsightsEvent('event', 'js_load', { timestamp: Date.now() });
             addInsightsEvent('set', {
                 'session_id': maskedId,

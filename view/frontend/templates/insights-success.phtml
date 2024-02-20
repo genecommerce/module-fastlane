@@ -3,8 +3,8 @@
  * @var \Magento\Framework\View\Element\Template $block
  */
 
-/** @var \PayPal\Fastlane\ViewModel\BraintreeConfig $brainteeConfigViewModel */
-$brainteeConfigViewModel = $block->getData('braintree_config_view_model');
+/** @var \PayPal\Fastlane\ViewModel\InsightsViewModel $insightsViewModel */
+$insightsViewModel = $block->getData('insights_view_model');
 /** @var \PayPal\Fastlane\ViewModel\CheckoutSuccess $orderViewViewModel */
 $orderViewViewModel = $block->getData('order_view_view_model');
 
@@ -17,7 +17,8 @@ if ($getLastOrderData['maskedId'] !== ''):
 {
     "*": {
         "PayPal_Fastlane/js/insights-success": {
-            "merchantId": "<?= /* @noEscape */ $brainteeConfigViewModel->getMerchantId() ?>",
+            "clientId": "<?= /* @noEscape */ $insightsViewModel->getClientId() ?>",
+            "merchantId": "<?= /* @noEscape */ $insightsViewModel->getMerchantId() ?>",
             "order": <?= /* @noEscape */ json_encode($getLastOrderData) ?>
         }
     }
