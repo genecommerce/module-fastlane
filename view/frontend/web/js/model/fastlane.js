@@ -6,15 +6,15 @@ define([
     'Magento_Checkout/js/action/select-payment-method',
     'Magento_Checkout/js/action/set-shipping-information',
     'Magento_Checkout/js/checkout-data',
-    'Magento_Customer/js/model/address-list',
     'Magento_Checkout/js/model/shipping-service',
     'Magento_Checkout/js/model/step-navigator',
+    'Magento_Customer/js/model/address-list',
     'braintree',
     'braintreeDataCollector',
     'braintreeFastlane',
     'PayPal_Fastlane/js/helpers/map-address'
 ], function ($, ko, uiRegistry, quote, selectPaymentMethodAction, setShippingInformationAction, checkoutData,
-    addressList, shippingService, stepNavigator, client, dataCollector, brainteeFastlane, mapAddress) {
+    shippingService, stepNavigator, addressList, client, dataCollector, brainteeFastlane, mapAddress) {
     'use strict';
 
     return {
