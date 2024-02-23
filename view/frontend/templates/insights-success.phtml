@@ -17,8 +17,7 @@ if ($getLastOrderData['maskedId'] !== ''):
 {
     "*": {
         "PayPal_Fastlane/js/insights-success": {
-            "clientId": "<?= /* @noEscape */ $insightsViewModel->getClientId() ?>",
-            "merchantId": "<?= /* @noEscape */ $insightsViewModel->getMerchantId() ?>",
+            "clientId": "<?= /* @noEscape */ $insightsViewModel->getClientId() ?>"
             "order": <?= /* @noEscape */ json_encode($getLastOrderData) ?>
         }
     }

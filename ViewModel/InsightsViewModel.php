@@ -20,16 +20,6 @@ class InsightsViewModel implements ArgumentInterface
     }
 
     /**
-     * Get Braintree Merchant ID.
-     *
-     * @return string
-     */
-    public function getMerchantId(): string
-    {
-        return $this->braintreeConfig->getMerchantId();
-    }
-
-    /**
      * Get the Braintree Client ID.
      *
      * @return string

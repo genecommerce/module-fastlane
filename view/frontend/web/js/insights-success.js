@@ -6,7 +6,7 @@ define([
 
     return function (config) {
         if (config.order.maskedId) {
-            addInsightsEvent('config', config.clientId, { merchant_id: config.merchantId });
+            addInsightsEvent('config', config.clientId);
             addInsightsEvent('event', 'js_load', { timestamp: Date.now() });
             addInsightsEvent('set', {
                 'session_id': config.order.maskedId,

@@ -2,8 +2,9 @@ define([
     'Magento_Checkout/js/model/quote',
     'PayPal_Fastlane/js/helpers/add-insights-event',
     'PayPal_Fastlane/js/helpers/get-masked-id',
+    'PayPal_Fastlane/js/helpers/map-payment-method',
     'payPalInsights'
-], function (quote, addInsightsEvent, getMaskedId) {
+], function (quote, addInsightsEvent, getMaskedId, mapPaymentMethod) {
     'use strict';
 
     return function (config) {
@@ -12,7 +13,7 @@ define([
         if (maskedId) {
             const totals = quote.totals();
 
-            addInsightsEvent('config', config.clientId, { merchant_id: config.merchantId });
+            addInsightsEvent('config', config.clientId);
             addInsightsEvent('event', 'js_load', { timestamp: Date.now() });
             addInsightsEvent('set', {
                 'session_id': maskedId,
@@ -31,7 +32,7 @@ define([
             // Attach subscription for changing payment method.
             quote.paymentMethod.subscribe(function (paymentMethod) {
                 addInsightsEvent('event', 'select_payment_method', {
-                    payment_method_selected: paymentMethod.method
+                    payment_method_selected: mapPaymentMethod(paymentMethod.method)
                 });
             });
         }
