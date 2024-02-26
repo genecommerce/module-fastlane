@@ -8,6 +8,8 @@ define([
             this._super();
 
             fastlaneModel.setup();
+
+            return this;
         },
 
         /**
