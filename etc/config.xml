@@ -7,6 +7,8 @@
                 <is_active>0</is_active>
                 <show_branding>0</show_branding>
                 <show_cardholder_name>0</show_cardholder_name>
+                <insights_enabled>1</insights_enabled>
+                <client_id></client_id>
                 <debug_mode>0</debug_mode>
             </fastlane>
         </payment>

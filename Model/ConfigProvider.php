@@ -53,6 +53,15 @@ class ConfigProvider implements ConfigProviderInterface
         );
     }
 
+    public function getClientId(int|string|null $storeId = null): string
+    {
+        return $this->scopeConfig->getValue(
+            self::XML_PATH_FASTLANE_CLIENT_ID,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
     /**
      * @param int|string|null $storeId
      * @return bool

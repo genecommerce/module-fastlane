@@ -1,8 +1,9 @@
 define([
     'Magento_Checkout/js/model/step-navigator',
+    'PayPal_Fastlane/js/helpers/add-insights-event',
     'PayPal_Fastlane/js/helpers/is-fastlane-available',
     'PayPal_Fastlane/js/model/fastlane'
-], function (stepsNavigator, isFastlaneAvailable, fastlaneModel) {
+], function (stepsNavigator, addInsightsEvent, isFastlaneAvailable, fastlaneModel) {
     'use strict';
 
     var mixin = {
@@ -28,6 +29,8 @@ define([
 
             // Check the entered email against Fastlane to see if we have an account.
             fastlaneModel.lookupCustomerByEmail(this.email());
+
+            addInsightsEvent('event', 'submit_checkout_email');
         }
     };
 
