@@ -111,13 +111,6 @@ define([
                     await this.createFastlaneInstance();
                 }
 
-                const email = checkoutData.getInputFieldEmailValue();
-
-                // If we have an email address already then try the lookup.
-                if (email) {
-                    await this.lookupCustomerByEmail(email);
-                }
-
                 resolve();
             });
 
