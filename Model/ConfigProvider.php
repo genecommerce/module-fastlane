@@ -59,7 +59,7 @@ class ConfigProvider implements ConfigProviderInterface
             self::XML_PATH_FASTLANE_CLIENT_ID,
             ScopeInterface::SCOPE_STORE,
             $storeId
-        );
+        ) ?? '';
     }
 
     /**
