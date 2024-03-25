@@ -5,16 +5,14 @@ define([
     'Magento_Checkout/js/model/quote',
     'Magento_Checkout/js/action/select-payment-method',
     'Magento_Checkout/js/action/set-shipping-information',
-    'Magento_Checkout/js/checkout-data',
     'Magento_Checkout/js/model/shipping-service',
     'Magento_Checkout/js/model/step-navigator',
     'Magento_Customer/js/model/address-list',
     'braintree',
     'braintreeDataCollector',
-    'braintreeFastlane',
     'PayPal_Fastlane/js/helpers/map-address'
-], function ($, ko, uiRegistry, quote, selectPaymentMethodAction, setShippingInformationAction, checkoutData,
-    shippingService, stepNavigator, addressList, client, dataCollector, brainteeFastlane, mapAddress) {
+], function ($, ko, uiRegistry, quote, selectPaymentMethodAction, setShippingInformationAction,
+    shippingService, stepNavigator, addressList, client, dataCollector, mapAddress) {
     'use strict';
 
     return {
@@ -74,10 +72,25 @@ define([
          * @returns {void}
          */
         createFastlaneInstance: async function () {
-            this.fastlaneInstance = await brainteeFastlane.create({
-                authorization: this.getClientToken(),
-                client: this.clientInstance,
-                deviceData: this.deviceData
+            return new Promise(async (resolve) => {
+                const script = document.createElement('script');
+
+                script.type = 'text/javascript';
+                script.src = 'https://www.paypalobjects.com/connect-boba/axo.js';
+                script.onload = () => {
+                    require(['braintreeFastlane'], (brainteeFastlane) => {
+                        this.fastlaneInstance = brainteeFastlane.create({
+                            authorization: this.getClientToken(),
+                            client: this.clientInstance,
+                            deviceData: this.deviceData
+                        }).then((instance) => {
+                            this.fastlaneInstance = instance;
+                            resolve();
+                        });
+                    });
+                };
+
+                document.head.appendChild(script);
             });
         },
 
