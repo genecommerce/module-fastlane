@@ -5,37 +5,14 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
-    .paypal-fastlane-powered-by paypal-watermark {
+    .paypal-fastlane-powered-by {
         display: block;
         margin: @indent__xs 0;
         width: @paypal-fastlane-watermark-width;
     }
 
-    .paypal-fastlane-container {
-        border-top: thin solid @paypal-fastlane-border-color;
-        margin-top: @indent__base;
-        padding: @indent__l 0;
-        position: relative;
-    }
-
-    .paypal-fastlane-edit {
-        position: absolute;
-        right: 0;
-        top: @indent__l;
-
-        .lib-icon-font(
-            @paypal-fastlane-icon-edit,
-            @_icon-font-size: 18px,
-            @_icon-font-line-height: 20px,
-            @_icon-font-text-hide: true,
-            @_icon-font-color: @minicart-icons-color,
-            @_icon-font-color-hover: @primary__color,
-            @_icon-font-color-active: @minicart-icons-color
-        );
-    }
-
-    .paypal-fastlane-has-account #paypal-fastlane-payment {
-        width: ~'calc(100% - 30px)';
+    #paypal-fastlane-payment {
+        margin-bottom: @indent__base;
     }
 
     .paypal-fastlane-shipping-change-address-form {

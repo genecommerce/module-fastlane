@@ -28,8 +28,8 @@ define([
         },
 
         renderWatermark: async function () {
-            // Early return if branding is disabled.
-            if (!isBrandingEnabled()) {
+            // Early return if we are rendering the email watermark but branding is disabled.
+            if (this.id === 'paypal-fastlane-email-watermark' && !isBrandingEnabled()) {
                 return;
             }
 

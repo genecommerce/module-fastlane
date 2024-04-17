@@ -36,10 +36,6 @@ define([
             if (additionalValidators.validate()) {
                 this.placeOrder();
             }
-        },
-
-        changePayment: function () {
-            fastlaneModel.displayChangeCard();
         }
     };
 

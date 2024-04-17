@@ -1,8 +1,13 @@
 define([
     'jquery',
+    'uiRegistry',
+    'mage/translate',
+    'Magento_Checkout/js/model/quote',
+    'Magento_Ui/js/model/messageList',
     'PayPal_Fastlane/js/helpers/is-fastlane-available',
+    'PayPal_Fastlane/js/helpers/map-address',
     'PayPal_Fastlane/js/model/fastlane'
-], function ($, isFastlaneAvailable, fastlaneModel) {
+], function ($, uiRegistry, $t, quote, messageList, isFastlaneAvailable, mapAddress, fastlaneModel) {
     'use strict';
 
     var mixin = {
@@ -16,7 +21,7 @@ define([
                     }
 
                     await fastlaneModel.setup();
-                    await fastlaneModel.renderConnectCardComponent('#paypal-fastlane-payment');
+                    await fastlaneModel.renderFastlanePaymentComponent('#paypal-fastlane-payment');
 
                     $(document.body).trigger('processStop');
                 }
@@ -41,15 +46,55 @@ define([
             }
             this.isProcessing = true;
 
-            const response = await fastlaneModel.tokenizePayment();
+            const { id, paymentSource: { card: { billingAddress } } } = await fastlaneModel.getPaymentToken(),
+                data = {
+                    nonce: id,
+                    details: {
+                        bin: {}
+                    }
+                },
+                mappedAddress = mapAddress(billingAddress),
+                checkoutProvider = uiRegistry.get('checkoutProvider');
 
-            // Map the bin response from Fastlane to what is expected by Braintree core.
-            response.details.bin = response.binData;
+            quote.billingAddress(mappedAddress);
+            checkoutProvider.set(
+                'billingAddressbraintree',
+                mappedAddress
+            );
 
-            this.clientConfig.onPaymentMethodReceived(response);
+            if (this.isBillingAddressValid()) {
+                this.clientConfig.onPaymentMethodReceived(data);
+            } else {
+                this.isProcessing = false;
+                messageList.addErrorMessage({
+                    message: $t('Your billing address is not valid.')
+                });
+            }
+
             return false;
-        }
+        },
 
+        /**
+         * Validates the billing address in the checkout provider.
+         *
+         * @returns {Boolean}
+         */
+        isBillingAddressValid() {
+            // Load the Braintree payment form.
+            const billingAddress = uiRegistry.get('checkout.steps.billing-step.payment.payments-list.braintree-form');
+
+            // Reset the validation.
+            billingAddress.source.set('params.invalid', false);
+
+            // Call validation and also the custom attributes validation if they exist.
+            billingAddress.source.trigger('billingAddressbraintree.data.validate');
+
+            if (billingAddress.source.get('billingAddressbraintree.custom_attributes')) {
+                billingAddress.source.trigger('billingAddressbraintree.custom_attributes.data.validate');
+            }
+
+            return !billingAddress.source.get('params.invalid');
+        }
     };
 
     return function (target) {

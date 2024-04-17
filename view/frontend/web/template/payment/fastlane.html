@@ -14,19 +14,7 @@
         </label>
     </div>
     <div class="payment-method-content">
-        <div class="payment-method-billing-address">
-            <!-- ko foreach: $parent.getRegion(getBillingAddressFormName()) -->
-            <!-- ko template: getTemplate() --><!-- /ko -->
-            <!--/ko-->
-        </div>
-        <div class="paypal-fastlane-container" data-bind="css: { 'paypal-fastlane-has-account': profileData() }">
-            <!-- ko if: profileData() -->
-                <button class="abs-action-remove paypal-fastlane-edit" data-bind="click: changePayment">
-                    <span data-bind="i18n: 'edit'"></span>
-                </button>
-            <!--/ko-->
-            <div id="paypal-fastlane-payment"></div>
-        </div>
+        <div id="paypal-fastlane-payment"></div>
         <div class="checkout-agreements-block">
             <!-- ko foreach: $parent.getRegion('before-place-order') -->
             <!-- ko template: getTemplate() --><!-- /ko -->
