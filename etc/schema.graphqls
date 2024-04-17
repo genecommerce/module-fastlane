@@ -1,0 +1,7 @@
+type StoreConfig {
+    paypal_fastlane_is_active: Boolean @doc(description: "PayPal Fastlane is active")
+    paypal_fastlane_show_branding: Boolean @doc(description: "PayPal Fastlane show branding")
+    paypal_fastlane_show_cardholder_name: Boolean @doc(description: "PayPal Fastlane show cardholder name")
+    paypal_fastlane_insights_enabled: Boolean @doc(description: "PayPal Fastlane insights enabled")
+    paypal_fastlane_client_id: String @doc(description: "PayPal Fastlane client ID")
+}

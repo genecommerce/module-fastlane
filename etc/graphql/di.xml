@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\StoreGraphQl\Model\Resolver\Store\StoreConfigDataProvider">
+        <arguments>
+            <argument name="extendedConfigData" xsi:type="array">
+                <item name="paypal_fastlane_is_active" xsi:type="string">payment/fastlane/is_active</item>
+                <item name="paypal_fastlane_show_branding" xsi:type="string">payment/fastlane/show_branding</item>
+                <item name="paypal_fastlane_show_cardholder_name" xsi:type="string">payment/fastlane/show_cardholder_name</item>
+                <item name="paypal_fastlane_insights_enabled" xsi:type="string">payment/fastlane/insights_enabled</item>
+                <item name="paypal_fastlane_client_id" xsi:type="string">payment/fastlane/client_id</item>
+            </argument>
+        </arguments>
+    </type>
+</config>
