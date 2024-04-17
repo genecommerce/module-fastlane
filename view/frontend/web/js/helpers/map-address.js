@@ -13,25 +13,34 @@ define([
      */
     return function (address) {
         const mappedAddress = Address({
-            region: {
-                region_id: getRegionId(address.countryCodeAlpha2, address.region),
-                region_code: address.region
-            },
-            company: address.company,
-            country_id: address.countryCodeAlpha2,
-            street: [
-                address.streetAddress
-            ],
-            firstname: address.firstName,
-            lastname: address.lastName,
-            city: address.locality,
-            telephone: address.phoneNumber,
-            postcode: address.postalCode
-        });
+                region: {
+                    region_id: getRegionId(address.countryCodeAlpha2, address.region),
+                    region_code: address.region
+                },
+                company: address.company || '',
+                country_id: address.countryCodeAlpha2,
+                street: [
+                    address.streetAddress
+                ],
+                firstname: address.firstName || '',
+                lastname: address.lastName || '',
+                city: address.locality,
+                telephone: address.phoneNumber || '',
+                postcode: address.postalCode
+            }),
+            tempStreet = mappedAddress.street;
 
         if (address.extendedAddress) {
             mappedAddress.street.push(address.extendedAddress);
         }
+
+        mappedAddress.street = {
+            0: tempStreet[0],
+            1: tempStreet[1] || ''
+        };
+        mappedAddress.country_id = mappedAddress.countryId;
+        mappedAddress.region_code = mappedAddress.regionCode;
+        mappedAddress.region_id = mappedAddress.regionId;
 
         return mappedAddress;
     };

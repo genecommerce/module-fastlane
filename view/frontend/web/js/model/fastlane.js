@@ -18,7 +18,8 @@ define([
     return {
         clientInstance: null,
         fastlaneInstance: null,
-        fastlaneCardComponent: null,
+        fastlanePaymentComponent: null,
+        fastlaneWatermarkComponent: null,
         deviceData: null,
         runningSetup: null,
         profileData: ko.observable(null),
@@ -189,7 +190,7 @@ define([
          * @param {string} selector The css selector where to render the card component.
          * @returns {void}
          */
-        renderConnectCardComponent: async function (selector) {
+        renderFastlanePaymentComponent: async function (selector) {
             if (this.fastlaneInstance) {
                 const fields = {
                     phoneNumber: {
@@ -203,8 +204,9 @@ define([
                     fields.cardholderName = {};
                 }
 
-                this.fastlaneCardComponent = await this.fastlaneInstance
-                    .ConnectCardComponent({ fields }).render(selector);
+                this.fastlanePaymentComponent = await this.fastlaneInstance
+                    .FastlanePaymentComponent({ fields });
+                this.fastlanePaymentComponent.render(selector);
             }
         },
 
@@ -235,38 +237,16 @@ define([
         },
 
         /**
-         * Displays the change card component from Fastlane.
-         *
-         * When a User updates their card information this will automatically pass this into the appropriate
-         * quote models to update their billing address and card.
-         *
-         * @returns {void}
-         */
-        displayChangeCard: async function () {
-            if (this.fastlaneCardComponent) {
-                const { selectionChanged, selectedCard } = await this.fastlaneInstance.profile.showCardSelector();
-
-                if (selectionChanged) {
-                    this.selectedCard = selectedCard;
-
-                    const mappedAddress = mapAddress(this.selectedCard.paymentSource.card.billingAddress),
-                        currentBilling = quote.billingAddress();
-
-                    quote.billingAddress($.extend({}, currentBilling, mappedAddress));
-                }
-            }
-        },
-
-        /**
          * Renders the Fastlane watermark into the given selector.
          * @param {string} selector The css selector where to render the watermark component.
          * @returns {void}
          */
-        renderConnectWatermarkComponent: function (selector) {
+        renderConnectWatermarkComponent: async function (selector) {
             if (this.fastlaneInstance) {
-                this.fastlaneInstance.ConnectWatermarkComponent({
+                this.fastlaneWatermarkComponent = await this.fastlaneInstance.FastlaneWatermarkComponent({
                     includeAdditionalInfo: true
-                }).render(selector);
+                });
+                this.fastlaneWatermarkComponent.render(selector);
             }
         },
 
@@ -342,36 +322,23 @@ define([
          * @returns {void}
          */
         addAddressToCheckoutProvider: function (address) {
-            const checkoutProvider = uiRegistry.get('checkoutProvider'),
-                existingAddress = checkoutProvider.get('shippingAddress'),
-                tempStreet = address.street;
-
-            address.street = {
-                0: tempStreet[0],
-                1: tempStreet[1] || ''
-            };
-            address.country_id = address.countryId;
-            address.region_code = address.regionCode;
-            address.region_id = address.regionId;
+            const checkoutProvider = uiRegistry.get('checkoutProvider');
 
             checkoutProvider.set(
                 'shippingAddress',
-                $.extend({}, existingAddress, address)
+                address
             );
             quote.shippingAddress(address);
-            quote.billingAddress(address);
         },
 
         /**
-         * Tokenize the payment using Fastlane.
+         * Get the payment token.
          *
          * @returns {Promise}
          */
-        tokenizePayment: function () {
-            if (this.fastlaneCardComponent) {
-                const billingAddress = quote.billingAddress();
-
-                return this.fastlaneCardComponent.tokenize({ billingAddress });
+        getPaymentToken: function () {
+            if (this.fastlanePaymentComponent) {
+                return this.fastlanePaymentComponent.getPaymentToken();
             }
         }
     };
