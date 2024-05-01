@@ -79,7 +79,7 @@ define([
                 script.type = 'text/javascript';
                 script.src = 'https://www.paypalobjects.com/connect-boba/axo.js';
                 script.onload = async () => {
-                    const fastlane = await braintree.fastlane.create({
+                    const fastlane = await window.braintree.fastlane.create({
                         platform: 'BT',
                         platformOptions: {
                             platform: 'BT',
@@ -88,6 +88,7 @@ define([
                             deviceData: this.deviceData
                         }
                     });
+
                     resolve(fastlane);
                 };
 
