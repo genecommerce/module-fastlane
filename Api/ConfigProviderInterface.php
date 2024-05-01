@@ -10,7 +10,6 @@ interface ConfigProviderInterface
     public const XML_PATH_FASTLANE_SHOW_BRANDING = "payment/fastlane/show_branding";
     public const XML_PATH_FASTLANE_SHOW_CARDHOLDER = "payment/fastlane/show_cardholder_name";
     public const XML_PATH_FASTLANE_CLIENT_ID = "payment/fastlane/client_id";
-    public const XML_PATH_FASTLANE_DEBUG_MODE = "payment/fastlane/debug_mode";
 
     /**
      * @param int|string|null $storeId
@@ -35,10 +34,4 @@ interface ConfigProviderInterface
      * @return string
      */
     public function getClientId(int|string|null $storeId = null): string;
-
-    /**
-     * @param int|string|null $storeId
-     * @return bool
-     */
-    public function isDebugModeEnabled(int|string|null $storeId = null): bool;
 }

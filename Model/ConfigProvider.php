@@ -61,17 +61,4 @@ class ConfigProvider implements ConfigProviderInterface
             $storeId
         ) ?? '';
     }
-
-    /**
-     * @param int|string|null $storeId
-     * @return bool
-     */
-    public function isDebugModeEnabled(int|string|null $storeId = null): bool
-    {
-        return $this->scopeConfig->isSetFlag(
-            self::XML_PATH_FASTLANE_DEBUG_MODE,
-            ScopeInterface::SCOPE_STORE,
-            $storeId
-        );
-    }
 }

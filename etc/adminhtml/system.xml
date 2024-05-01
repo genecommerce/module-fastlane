@@ -36,14 +36,6 @@
                                 <field id="insights_enabled">1</field>
                             </depends>
                         </field>
-                        <field id="debug_mode" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>Debug mode</label>
-                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                            <config_path>payment/fastlane/debug_mode</config_path>
-                            <depends>
-                                <field id="is_active">1</field>
-                            </depends>
-                        </field>
                     </group>
                 </group>
             </group>
