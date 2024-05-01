@@ -46,15 +46,23 @@ define([
             }
             this.isProcessing = true;
 
-            const { id, paymentSource: { card: { billingAddress } } } = await fastlaneModel.getPaymentToken(),
+            const { id, paymentSource: { card: { billingAddress, name } } } = await fastlaneModel.getPaymentToken(),
                 data = {
                     nonce: id,
                     details: {
                         bin: {}
                     }
                 },
+                [firstname, ...lastname] = name.split(' '),
                 mappedAddress = mapAddress(billingAddress),
                 checkoutProvider = uiRegistry.get('checkoutProvider');
+
+            // Fastlane doesn't provide a phone number in the billing address so get it from shipping.
+            mappedAddress.telephone = quote.shippingAddress().telephone;
+
+            // Add the firstname and lastname as these aren't within the billing address object from Fastlane either.
+            mappedAddress.firstname = firstname;
+            mappedAddress.lastname = lastname.join(' ');
 
             quote.billingAddress(mappedAddress);
             checkoutProvider.set(
