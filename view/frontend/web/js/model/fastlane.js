@@ -72,23 +72,24 @@ define([
          *
          * @returns {void}
          */
-        createFastlaneInstance: async function () {
-            return new Promise(async (resolve) => {
+        createFastlaneInstance: function () {
+            return new Promise((resolve) => {
                 const script = document.createElement('script');
 
                 script.type = 'text/javascript';
                 script.src = 'https://www.paypalobjects.com/connect-boba/axo.js';
-                script.onload = () => {
-                    require(['braintreeFastlane'], (brainteeFastlane) => {
-                        this.fastlaneInstance = brainteeFastlane.create({
+                script.onload = async () => {
+                    const fastlane = await window.braintree.fastlane.create({
+                        platform: 'BT',
+                        platformOptions: {
+                            platform: 'BT',
                             authorization: this.getClientToken(),
                             client: this.clientInstance,
                             deviceData: this.deviceData
-                        }).then((instance) => {
-                            this.fastlaneInstance = instance;
-                            resolve();
-                        });
+                        }
                     });
+
+                    resolve(fastlane);
                 };
 
                 document.head.appendChild(script);
@@ -122,7 +123,7 @@ define([
                 }
 
                 if (!this.fastlaneInstance) {
-                    await this.createFastlaneInstance();
+                    this.fastlaneInstance = await this.createFastlaneInstance();
                 }
 
                 resolve();
@@ -148,7 +149,7 @@ define([
             this.customerContextId = null;
 
             // Lookup the new User.
-            const { customerContextId } = await this.fastlaneInstance.identity.lookupCustomerByEmail(email);
+            const { customerContextId } = await this.fastlaneInstance?.identity?.lookupCustomerByEmail(email) || {};
 
             $(document.body).trigger('processStop');
 
