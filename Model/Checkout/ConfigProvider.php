@@ -29,7 +29,7 @@ class ConfigProvider implements CheckoutConfigProviderInterface
         ];
 
         if ($this->configProvider->isPayPalConnectActive()) {
-            $config['fastlane']['show_branding'] = $this->configProvider->getShowBranding();
+            $config['fastlane']['privacy'] = $this->configProvider->getShowPrivacy();
             $config['fastlane']['show_cardholder_name'] = $this->configProvider->getShowCardholderName();
         }
         return $config;

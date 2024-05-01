@@ -5,35 +5,44 @@
         <section id="payment">
             <group id="braintree_section">
                 <group id="braintree">
-                    <group id="paypal_fastlane" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="75">
+                    <comment><![CDATA[Accept credit/debit cards and PayPal in your Magento store.<br />
+                    No setup or monthly fees and your customers never leave your store to complete the purchase.
+                    Fastlane by PayPal is now available with your Braintree integration. <a href="#" id="fastlane-learn-more">Learn More</a>]]></comment>
+                    <group id="paypal_fastlane" translate="label comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="30">
                         <label>Fastlane</label>
+                        <comment><![CDATA[Offer a checkout experience that recognizes guest shoppers and autofills their details so they can pay in seconds. You’ll also need to enable Fastlane in your <a href="#">Braintree Dashboard.</a>]]></comment>
+                        <fieldset_css>fastlane-section</fieldset_css>
                         <frontend_model>Magento\Config\Block\System\Config\Form\Fieldset</frontend_model>
                         <field id="is_active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Use Fastlane by PayPal</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                             <config_path>payment/fastlane/is_active</config_path>
                         </field>
-                        <field id="show_branding" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>Show Fastlane branding</label>
+                        <field id="privacy" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Privacy</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                            <config_path>payment/fastlane/show_branding</config_path>
+                            <config_path>payment/fastlane/privacy</config_path>
+                            <comment><![CDATA[This setting will control whether Fastlane branding is shown by email field.]]></comment>
+                            <tooltip>Tooltip</tooltip>
                             <depends>
                                 <field id="is_active">1</field>
                             </depends>
                         </field>
-                        <field id="show_cardholder_name" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="client_id" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Client ID</label>
+                            <config_path>payment/fastlane/client_id</config_path>
+                            <comment><![CDATA[This setting will enable the PayPal insights SDK to receive conversion data in the merchants PYPL dashboard. <a href="#">Find your client ID.</a>]]></comment>
+                            <depends>
+                                <field id="is_active">1</field>
+                            </depends>
+                        </field>
+                        <field id="show_cardholder_name" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Show Cardholder name</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                             <config_path>payment/fastlane/show_cardholder_name</config_path>
+                            <comment><![CDATA[This setting will control whether or not the cardholder name is displayed in the card field’s UI]]></comment>
                             <depends>
                                 <field id="is_active">1</field>
-                            </depends>
-                        </field>
-                        <field id="client_id" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>Client ID</label>
-                            <config_path>payment/fastlane/client_id</config_path>
-                            <depends>
-                                <field id="insights_enabled">1</field>
                             </depends>
                         </field>
                     </group>

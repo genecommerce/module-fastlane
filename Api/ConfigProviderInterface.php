@@ -7,7 +7,7 @@ namespace PayPal\Fastlane\Api;
 interface ConfigProviderInterface
 {
     public const XML_PATH_FASTLANE_IS_ACTIVE = "payment/fastlane/is_active";
-    public const XML_PATH_FASTLANE_SHOW_BRANDING = "payment/fastlane/show_branding";
+    public const XML_PATH_FASTLANE_PRIVACY = "payment/fastlane/privacy";
     public const XML_PATH_FASTLANE_SHOW_CARDHOLDER = "payment/fastlane/show_cardholder_name";
     public const XML_PATH_FASTLANE_CLIENT_ID = "payment/fastlane/client_id";
 
@@ -21,7 +21,7 @@ interface ConfigProviderInterface
      * @param int|string|null $storeId
      * @return bool
      */
-    public function getShowBranding(int|string|null $storeId = null): bool;
+    public function getShowPrivacy(int|string|null $storeId = null): bool;
 
     /**
      * @param int|string|null $storeId

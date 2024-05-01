@@ -35,10 +35,10 @@ class ConfigProvider implements ConfigProviderInterface
      * @param int|string|null $storeId
      * @return bool
      */
-    public function getShowBranding(int|string|null $storeId = null): bool
+    public function getShowPrivacy(int|string|null $storeId = null): bool
     {
         return $this->scopeConfig->isSetFlag(
-            self::XML_PATH_FASTLANE_SHOW_BRANDING,
+            self::XML_PATH_FASTLANE_PRIVACY,
             ScopeInterface::SCOPE_STORE,
             $storeId
         );
