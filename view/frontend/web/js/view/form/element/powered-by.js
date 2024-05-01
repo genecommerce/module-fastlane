@@ -19,7 +19,7 @@ define([
          * @returns {Object} Chainable.
          */
         initialize: function (config) {
-            this._super();
+            this._super(config);
 
             this.id = config.id;
             this.profileData = fastlaneModel.profileData;
