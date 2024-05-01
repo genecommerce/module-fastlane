@@ -1,9 +1,10 @@
 define([
+    'knockout',
     'uiComponent',
     'PayPal_Fastlane/js/helpers/is-branding-enabled',
     'PayPal_Fastlane/js/helpers/is-fastlane-available',
     'PayPal_Fastlane/js/model/fastlane'
-], function (Component, isBrandingEnabled, isFastlaneAvailable, fastlaneModel) {
+], function (ko, Component, isBrandingEnabled, isFastlaneAvailable, fastlaneModel) {
     'use strict';
 
     return Component.extend({
@@ -23,28 +24,34 @@ define([
 
             this.id = config.id;
             this.profileData = fastlaneModel.profileData;
+            this.isVisible = ko.observable(false);
 
             return this;
         },
 
-        renderWatermark: async function () {
-            // Early return if we are rendering the email watermark but branding is disabled.
-            if (this.id === 'paypal-fastlane-email-watermark' && !isBrandingEnabled()) {
-                return;
-            }
-
+        shouldRenderWatermark: async function () {
             // Early return if Fastlane is not available.
             if (!isFastlaneAvailable()) {
                 return false;
             }
 
             await fastlaneModel.setup();
-            // Check that the User is using Fastlane before rendering the shipping powered by component.
-            if (this.id === 'paypal-fastlane-shipping-watermark' && !this.profileData()) {
-                return;
-            }
 
-            fastlaneModel.renderConnectWatermarkComponent(`#${this.id}`);
+            // Fastlane Watermark should be rendered based on the following:
+            //   - Email watermark is based on the branding configuration
+            //   - All others are based on whether we have profile data
+            const shouldRender = this.id === 'paypal-fastlane-email-watermark' && isBrandingEnabled()
+                || this.id !== 'paypal-fastlane-email-watermark' && !!this.profileData();
+
+            this.isVisible(shouldRender);
+        },
+
+        renderWatermark: async function () {
+            await this.shouldRenderWatermark();
+
+            if (this.isVisible()) {
+                fastlaneModel.renderConnectWatermarkComponent(`#${this.id}`);
+            }
         }
     });
 });
