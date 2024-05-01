@@ -74,26 +74,24 @@ define([
          */
         createFastlaneInstance: function () {
             return new Promise((resolve) => {
-                (function(document, clientToken, clientInstance, deviceData, resolve) {
-                    const script = document.createElement('script');
+                const script = document.createElement('script');
 
-                    script.type = 'text/javascript';
-                    script.src = 'https://www.paypalobjects.com/connect-boba/axo.js';
-                    script.onload = async () => {
-                        const fastlane = await braintree.fastlane.create({
+                script.type = 'text/javascript';
+                script.src = 'https://www.paypalobjects.com/connect-boba/axo.js';
+                script.onload = async () => {
+                    const fastlane = await braintree.fastlane.create({
+                        platform: 'BT',
+                        platformOptions: {
                             platform: 'BT',
-                            platformOptions: {
-                                platform: 'BT',
-                                authorization: clientToken,
-                                client: clientInstance,
-                                deviceData: deviceData
-                            }
-                        });
-                        resolve(fastlane);
-                    };
+                            authorization: this.getClientToken(),
+                            client: this.clientInstance,
+                            deviceData: this.deviceData
+                        }
+                    });
+                    resolve(fastlane);
+                };
 
-                    document.head.appendChild(script);
-                })(document, this.getClientToken(), this.clientInstance, this.deviceData, resolve);
+                document.head.appendChild(script);
             });
         },
 
