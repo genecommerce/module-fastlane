@@ -5,9 +5,9 @@ define([
     'Magento_Checkout/js/model/quote',
     'Magento_Ui/js/model/messageList',
     'PayPal_Fastlane/js/helpers/is-fastlane-available',
-    'PayPal_Fastlane/js/helpers/map-address',
+    'PayPal_Fastlane/js/helpers/map-address-to-magento',
     'PayPal_Fastlane/js/model/fastlane'
-], function ($, uiRegistry, $t, quote, messageList, isFastlaneAvailable, mapAddress, fastlaneModel) {
+], function ($, uiRegistry, $t, quote, messageList, isFastlaneAvailable, mapAddressToMagento, fastlaneModel) {
     'use strict';
 
     var mixin = {
@@ -54,7 +54,7 @@ define([
                     }
                 },
                 [firstname, ...lastname] = name.split(' '),
-                mappedAddress = mapAddress(billingAddress),
+                mappedAddress = mapAddressToMagento(billingAddress),
                 checkoutProvider = uiRegistry.get('checkoutProvider');
 
             // Fastlane doesn't provide a phone number in the billing address so get it from shipping.

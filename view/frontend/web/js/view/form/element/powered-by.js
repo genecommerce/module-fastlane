@@ -50,7 +50,7 @@ define([
             await this.shouldRenderWatermark();
 
             if (this.isVisible()) {
-                fastlaneModel.renderConnectWatermarkComponent(`#${this.id}`);
+                fastlaneModel.renderFastlaneWatermarkComponent(`#${this.id}`);
             }
         }
     });
