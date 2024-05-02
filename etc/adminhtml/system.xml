@@ -10,7 +10,7 @@
                     Fastlane by PayPal is now available with your Braintree integration. <a href="#" id="fastlane-learn-more">Learn More</a>]]></comment>
                     <group id="paypal_fastlane" translate="label comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="30">
                         <label>Fastlane</label>
-                        <comment><![CDATA[Offer a checkout experience that recognizes guest shoppers and autofills their details so they can pay in seconds. You’ll also need to enable Fastlane in your <a href="#">Braintree Dashboard.</a>]]></comment>
+                        <comment><![CDATA[Offer a checkout experience that recognizes guest shoppers and autofills their details so they can pay in seconds. You’ll also need to enable Fastlane in your <a href="https://www.braintreegateway.com" target="_blank">Braintree Dashboard.</a>]]></comment>
                         <fieldset_css>fastlane-section</fieldset_css>
                         <frontend_model>Magento\Config\Block\System\Config\Form\Fieldset</frontend_model>
                         <field id="is_active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -31,7 +31,7 @@
                         <field id="client_id" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Client ID</label>
                             <config_path>payment/fastlane/client_id</config_path>
-                            <comment><![CDATA[This setting will enable the PayPal insights SDK to receive conversion data in the merchants PYPL dashboard. <a href="#">Find your client ID.</a>]]></comment>
+                            <comment><![CDATA[This setting will enable the PayPal insights SDK to receive conversion data in the merchants PYPL dashboard. <a href="https://developer.paypal.com/api/rest/#link-getclientidandclientsecret" target="_blank">Find your client ID.</a>]]></comment>
                             <depends>
                                 <field id="is_active">1</field>
                             </depends>
@@ -48,7 +48,7 @@
 
                         <group id="braintree_fastlane_styling" translate="label comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="50">
                             <label>Advanced Style Settings (optional)</label>
-                            <comment><![CDATA[Leave the default styling, or customize how Fastlane looks on your website. See <a href="#">PayPal’s developer docs</a> for info.]]></comment>
+                            <comment><![CDATA[Leave the default styling, or customize how Fastlane looks on your website. See <a href="https://developer.paypal.com/limited-release/accelerated-checkout-bt" target="_blank">PayPal’s developer docs</a> for info.]]></comment>
                             <fieldset_css>fastlane-styling-section</fieldset_css>
                             <depends>
                                 <field id="is_active">1</field>
