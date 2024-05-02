@@ -10,9 +10,11 @@ define([
     'Magento_Customer/js/model/address-list',
     'braintree',
     'braintreeDataCollector',
-    'PayPal_Fastlane/js/helpers/map-address'
-], function ($, ko, uiRegistry, quote, selectPaymentMethodAction, setShippingInformationAction,
-    shippingService, stepNavigator, addressList, client, dataCollector, mapAddress) {
+    'PayPal_Fastlane/js/helpers/get-styles',
+    'PayPal_Fastlane/js/helpers/map-address-to-fastlane',
+    'PayPal_Fastlane/js/helpers/map-address-to-magento'
+], function ($, ko, uiRegistry, quote, selectPaymentMethodAction, setShippingInformationAction, shippingService,
+    stepNavigator, addressList, client, dataCollector, getStyles, mapAddressToFastlane, mapAddressToMagento) {
     'use strict';
 
     return {
@@ -194,11 +196,13 @@ define([
         renderFastlanePaymentComponent: async function (selector) {
             if (this.fastlaneInstance) {
                 const fields = {
-                    phoneNumber: {
-                        prefill: this.profileData()?.shippingAddress?.phoneNumber
+                        phoneNumber: {
+                            prefill: this.profileData()?.shippingAddress?.phoneNumber
                             || quote.billingAddress().telephone || ''
-                    }
-                };
+                        }
+                    },
+                    shippingAddress = mapAddressToFastlane(quote.shippingAddress()),
+                    styles = getStyles();
 
                 // Add the card holder name field if enabled in config.
                 if (window.checkoutConfig.fastlane.show_cardholder_name) {
@@ -206,7 +210,7 @@ define([
                 }
 
                 this.fastlanePaymentComponent = await this.fastlaneInstance
-                    .FastlanePaymentComponent({ fields });
+                    .FastlanePaymentComponent({ fields, shippingAddress, styles });
                 this.fastlanePaymentComponent.render(selector);
             }
         },
@@ -242,7 +246,7 @@ define([
          * @param {string} selector The css selector where to render the watermark component.
          * @returns {void}
          */
-        renderConnectWatermarkComponent: async function (selector) {
+        renderFastlaneWatermarkComponent: async function (selector) {
             if (this.fastlaneInstance) {
                 this.fastlaneWatermarkComponent = await this.fastlaneInstance.FastlaneWatermarkComponent({
                     includeAdditionalInfo: true
@@ -266,7 +270,7 @@ define([
                 this.shippingServiceSubscription.dispose();
             }
 
-            const mappedAddress = mapAddress(profileData.shippingAddress),
+            const mappedAddress = mapAddressToMagento(profileData.shippingAddress),
                 shippingAddress = uiRegistry.get('checkout.steps.shipping-step.shippingAddress');
 
             // Subscribe to get the updated shipping rates.
