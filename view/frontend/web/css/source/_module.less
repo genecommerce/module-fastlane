@@ -5,6 +5,12 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
+    axo-auth,
+    paypal-shipping-address-selector {
+        position: relative;
+        z-index: @paypal-fastlane-z-index;
+    }
+
     .paypal-fastlane-powered-by {
         display: block;
         margin: @indent__xs 0;
