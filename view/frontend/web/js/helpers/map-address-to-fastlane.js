@@ -14,7 +14,7 @@ define(function () {
             company: address.company,
             streetAddress: address.street[0],
             extendedAddress: address.street[1],
-            locality: '',
+            locality: address.city,
             region: address.regionCode,
             postalCode: address.postcode,
             countryCodeAlpha2: address.countryId,

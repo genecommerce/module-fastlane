@@ -2,19 +2,26 @@ define([
     'jquery',
     'knockout',
     'uiRegistry',
+    'mage/translate',
     'Magento_Checkout/js/model/quote',
     'Magento_Checkout/js/action/select-payment-method',
     'Magento_Checkout/js/action/set-shipping-information',
     'Magento_Checkout/js/model/shipping-service',
     'Magento_Checkout/js/model/step-navigator',
     'Magento_Customer/js/model/address-list',
+    'Magento_Ui/js/model/messageList',
     'braintree',
     'braintreeDataCollector',
+    'braintreeHostedFields',
+    'braintreeFastlane',
+    'PayPal_Fastlane/js/helpers/get-allowed-brands',
+    'PayPal_Fastlane/js/helpers/get-allowed-locations',
     'PayPal_Fastlane/js/helpers/get-styles',
     'PayPal_Fastlane/js/helpers/map-address-to-fastlane',
     'PayPal_Fastlane/js/helpers/map-address-to-magento'
-], function ($, ko, uiRegistry, quote, selectPaymentMethodAction, setShippingInformationAction, shippingService,
-    stepNavigator, addressList, client, dataCollector, getStyles, mapAddressToFastlane, mapAddressToMagento) {
+], function ($, ko, uiRegistry, $t, quote, selectPaymentMethodAction, setShippingInformationAction, shippingService,
+    stepNavigator, addressList, messageList, client, dataCollector, hostedFields,
+    braintreeFastlane, getAllowedBrands, getAllowedLocations, getStyles, mapAddressToFastlane, mapAddressToMagento) {
     'use strict';
 
     return {
@@ -74,27 +81,23 @@ define([
          *
          * @returns {void}
          */
-        createFastlaneInstance: function () {
-            return new Promise((resolve) => {
-                const script = document.createElement('script');
+        createFastlaneInstance: async function () {
+            window.braintree = window.braintree || {};
+            window.braintree.hostedFields = hostedFields;
+            window.braintree.fastlane = braintreeFastlane;
 
-                script.type = 'text/javascript';
-                script.src = 'https://www.paypalobjects.com/connect-boba/axo.js';
-                script.onload = async () => {
-                    const fastlane = await window.braintree.fastlane.create({
-                        platform: 'BT',
-                        platformOptions: {
-                            platform: 'BT',
-                            authorization: this.getClientToken(),
-                            client: this.clientInstance,
-                            deviceData: this.deviceData
-                        }
-                    });
-
-                    resolve(fastlane);
-                };
-
-                document.head.appendChild(script);
+            console.log(getAllowedBrands());
+            return await window.braintree.fastlane.create({
+                authorization: this.getClientToken(),
+                cardOptions: {
+                    allowedBrands: getAllowedBrands()
+                },
+                client: this.clientInstance,
+                deviceData: this.deviceData,
+                shippingAddressOptions: {
+                    allowedLocations: getAllowedLocations()
+                },
+                styles: getStyles()
             });
         },
 
@@ -206,7 +209,9 @@ define([
 
                 // Add the card holder name field if enabled in config.
                 if (window.checkoutConfig.fastlane.show_cardholder_name) {
-                    fields.cardholderName = {};
+                    fields.cardholderName = {
+                        prefill: `${shippingAddress.firstName} ${shippingAddress.lastName}`
+                    };
                 }
 
                 this.fastlanePaymentComponent = await this.fastlaneInstance
@@ -270,44 +275,51 @@ define([
                 this.shippingServiceSubscription.dispose();
             }
 
-            const mappedAddress = mapAddressToMagento(profileData.shippingAddress),
-                shippingAddress = uiRegistry.get('checkout.steps.shipping-step.shippingAddress');
+            try {
+                const mappedAddress = mapAddressToMagento(profileData.shippingAddress),
+                    shippingAddress = uiRegistry.get('checkout.steps.shipping-step.shippingAddress');
 
-            // Subscribe to get the updated shipping rates.
-            this.shippingServiceSubscription = shippingService.getShippingRates().subscribe(function (rates) {
-                this.shippingServiceSubscription.dispose();
+                // Subscribe to get the updated shipping rates.
+                this.shippingServiceSubscription = shippingService.getShippingRates().subscribe(function (rates) {
+                    this.shippingServiceSubscription.dispose();
 
-                if (!rates || !rates.length) {
-                    this.redirectToShipping();
-                    return;
-                }
-
-                // If the shipping address is valid and we have found some shipping rates then set the data to quote.
-                if (!shippingAddress.source.get('params.invalid') && rates && rates[0]) {
-                    shippingAddress.selectShippingMethod(rates[0]);
-                    setShippingInformationAction();
-
-                    // If we are on the first step of the checkout then we can skip to the next step.
-                    if (stepNavigator.getActiveItemIndex() === 0) {
-                        stepNavigator.next();
-
-                        // Automatically select Braintree as the payment method.
-                        selectPaymentMethodAction({ method: 'braintree' });
+                    if (!rates || !rates.length) {
+                        this.redirectToShipping();
+                        return;
                     }
 
-                    $(document.body).trigger('processStop');
+                    // If the shipping address is valid and we have some shipping rates then set the data to quote.
+                    if (!shippingAddress.source.get('params.invalid') && rates && rates[0]) {
+                        shippingAddress.selectShippingMethod(rates[0]);
+                        setShippingInformationAction();
+
+                        // If we are on the first step of the checkout then we can skip to the next step.
+                        if (stepNavigator.getActiveItemIndex() === 0) {
+                            stepNavigator.next();
+
+                            // Automatically select Braintree as the payment method.
+                            selectPaymentMethodAction({ method: 'braintree' });
+                        }
+
+                        $(document.body).trigger('processStop');
+                    }
+                }.bind(this));
+
+                // Push mapped address into the correct models which will trigger getting the updated shipping methods.
+                addressList.push(mappedAddress);
+                this.addAddressToCheckoutProvider(mappedAddress);
+
+                shippingAddress.source.set('params.invalid', false);
+                shippingAddress.triggerShippingDataValidateEvent();
+
+                if (shippingAddress.source.get('params.invalid')) {
+                    this.redirectToShipping();
                 }
-            }.bind(this));
-
-            // Push the mapped address into the correct models which will trigger getting the updated shipping methods.
-            addressList.push(mappedAddress);
-            this.addAddressToCheckoutProvider(mappedAddress);
-
-            shippingAddress.source.set('params.invalid', false);
-            shippingAddress.triggerShippingDataValidateEvent();
-
-            if (shippingAddress.source.get('params.invalid')) {
-                this.redirectToShipping();
+            } catch {
+                messageList.addErrorMessage({
+                    message: $t('The selected shipping address is not available to be used. Please enter a new one.')
+                });
+                $(document.body).trigger('processStop');
             }
         },
 

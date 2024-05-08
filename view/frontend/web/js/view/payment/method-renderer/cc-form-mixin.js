@@ -46,36 +46,42 @@ define([
             }
             this.isProcessing = true;
 
-            const { id, paymentSource: { card: { billingAddress, name } } } = await fastlaneModel.getPaymentToken(),
-                data = {
-                    nonce: id,
-                    details: {
-                        bin: {}
-                    }
-                },
-                [firstname, ...lastname] = name.split(' '),
-                mappedAddress = mapAddressToMagento(billingAddress),
-                checkoutProvider = uiRegistry.get('checkoutProvider');
+            try {
+                const { id, paymentSource: { card: { billingAddress, name } } } = await fastlaneModel.getPaymentToken(),
+                    data = {
+                        nonce: id,
+                        details: {
+                            bin: {}
+                        }
+                    },
+                    [firstname, ...lastname] = name.split(' '),
+                    mappedAddress = mapAddressToMagento(billingAddress),
+                    checkoutProvider = uiRegistry.get('checkoutProvider');
 
-            // Fastlane doesn't provide a phone number in the billing address so get it from shipping.
-            mappedAddress.telephone = quote.shippingAddress().telephone;
+                // Fastlane doesn't provide a phone number in the billing address so get it from shipping.
+                mappedAddress.telephone = quote.shippingAddress().telephone;
 
-            // Add the firstname and lastname as these aren't within the billing address object from Fastlane either.
-            mappedAddress.firstname = firstname;
-            mappedAddress.lastname = lastname.join(' ');
+                // Add the firstname and lastname as these aren't within the billing address from Fastlane either.
+                mappedAddress.firstname = firstname;
+                mappedAddress.lastname = lastname.join(' ');
 
-            quote.billingAddress(mappedAddress);
-            checkoutProvider.set(
-                'billingAddressbraintree',
-                mappedAddress
-            );
+                quote.billingAddress(mappedAddress);
+                checkoutProvider.set(
+                    'billingAddressbraintree',
+                    mappedAddress
+                );
 
-            if (this.isBillingAddressValid()) {
-                this.clientConfig.onPaymentMethodReceived(data);
-            } else {
-                this.isProcessing = false;
+                if (this.isBillingAddressValid()) {
+                    this.clientConfig.onPaymentMethodReceived(data);
+                } else {
+                    this.isProcessing = false;
+                    messageList.addErrorMessage({
+                        message: $t('Your billing address is not valid.')
+                    });
+                }
+            } catch {
                 messageList.addErrorMessage({
-                    message: $t('Your billing address is not valid.')
+                    message: $t('The selected billing address is not available to be used. Please enter a new one.')
                 });
             }
 
