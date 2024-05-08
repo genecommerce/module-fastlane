@@ -1,7 +1,8 @@
 define([
     'Magento_Checkout/js/model/new-customer-address',
+    'PayPal_Fastlane/js/helpers/get-allowed-locations',
     'PayPal_Fastlane/js/helpers/get-region-id'
-], function (Address, getRegionId) {
+], function (Address, getAllowedLocations, getRegionId) {
     'use strict';
 
     /**
@@ -28,7 +29,8 @@ define([
                 telephone: address.phoneNumber || '',
                 postcode: address.postalCode
             }),
-            tempStreet = mappedAddress.street;
+            tempStreet = mappedAddress.street,
+            allowedLocations = getAllowedLocations();
 
         if (address.extendedAddress) {
             mappedAddress.street.push(address.extendedAddress);
@@ -41,6 +43,11 @@ define([
         mappedAddress.country_id = mappedAddress.countryId;
         mappedAddress.region_code = mappedAddress.regionCode;
         mappedAddress.region_id = mappedAddress.regionId;
+
+        // If the country / region isn't available on this website then throw an error.
+        if (!allowedLocations.includes(mappedAddress.countryId)) {
+            throw new Error('paypal_fastlane:address_unavailable');
+        }
 
         return mappedAddress;
     };
