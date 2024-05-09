@@ -86,7 +86,6 @@ define([
             window.braintree.hostedFields = hostedFields;
             window.braintree.fastlane = braintreeFastlane;
 
-            console.log(getAllowedBrands());
             return await window.braintree.fastlane.create({
                 authorization: this.getClientToken(),
                 cardOptions: {

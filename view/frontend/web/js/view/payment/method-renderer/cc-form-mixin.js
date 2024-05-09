@@ -56,7 +56,8 @@ define([
                     },
                     [firstname, ...lastname] = name.split(' '),
                     mappedAddress = mapAddressToMagento(billingAddress),
-                    checkoutProvider = uiRegistry.get('checkoutProvider');
+                    checkoutProvider = uiRegistry.get('checkoutProvider'),
+                    braintreeBillingAddress = checkoutProvider.get('billingAddressbraintree');
 
                 // Fastlane doesn't provide a phone number in the billing address so get it from shipping.
                 mappedAddress.telephone = quote.shippingAddress().telephone;
@@ -66,9 +67,15 @@ define([
                 mappedAddress.lastname = lastname.join(' ');
 
                 quote.billingAddress(mappedAddress);
+
+                // Override all values of the Braintree billing address with the Fastlane values.
+                Object.keys(braintreeBillingAddress).forEach((addressKey) => {
+                    braintreeBillingAddress[addressKey] = mappedAddress[addressKey];
+                });
+
                 checkoutProvider.set(
                     'billingAddressbraintree',
-                    mappedAddress
+                    braintreeBillingAddress
                 );
 
                 if (this.isBillingAddressValid()) {
@@ -79,7 +86,8 @@ define([
                         message: $t('Your billing address is not valid.')
                     });
                 }
-            } catch {
+            } catch (error) {
+                this.isProcessing = false;
                 messageList.addErrorMessage({
                     message: $t('The selected billing address is not available to be used. Please enter a new one.')
                 });
@@ -95,19 +103,19 @@ define([
          */
         isBillingAddressValid() {
             // Load the Braintree payment form.
-            const billingAddress = uiRegistry.get('checkout.steps.billing-step.payment.payments-list.braintree-form');
+            const billingAddress = uiRegistry.get('checkoutProvider');
 
             // Reset the validation.
-            billingAddress.source.set('params.invalid', false);
+            billingAddress.set('params.invalid', false);
 
             // Call validation and also the custom attributes validation if they exist.
-            billingAddress.source.trigger('billingAddressbraintree.data.validate');
+            billingAddress.trigger(billingAddress.dataScopePrefix + '.data.validate');
 
-            if (billingAddress.source.get('billingAddressbraintree.custom_attributes')) {
-                billingAddress.source.trigger('billingAddressbraintree.custom_attributes.data.validate');
+            if (billingAddress.get(billingAddress.dataScopePrefix + '.custom_attributes')) {
+                billingAddress.trigger(billingAddress.dataScopePrefix + '.custom_attributes.data.validate');
             }
 
-            return !billingAddress.source.get('params.invalid');
+            return !billingAddress.get('params.invalid');
         }
     };
 
