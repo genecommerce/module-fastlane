@@ -10,7 +10,7 @@ $orderViewViewModel = $block->getData('order_view_view_model');
 
 $getLastOrderData = $orderViewViewModel->getLastOrderData();
 
-if ($getLastOrderData['maskedId'] !== ''):
+if (isset($getLastOrderData['maskedId']) && $getLastOrderData['maskedId'] !== ''):
 ?>
 
 <script type="text/x-magento-init">
