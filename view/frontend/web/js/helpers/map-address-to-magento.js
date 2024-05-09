@@ -47,6 +47,7 @@ define([
         // If the country / region isn't available on this website then throw an error.
         if (!allowedLocations.includes(mappedAddress.countryId)) {
             const error = new Error();
+
             error.name = 'paypal_fastlane:address_unavailable';
             throw error;
         }

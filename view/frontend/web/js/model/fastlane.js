@@ -387,6 +387,7 @@ define([
         getPaymentToken: function () {
             if (!this.fastlanePaymentComponent) {
                 const error = new Error();
+
                 error.name = 'paypal_fastlane:undefined_component';
                 throw error;
             }
