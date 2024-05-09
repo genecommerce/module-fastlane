@@ -47,6 +47,8 @@ define([
             this.isProcessing = true;
 
             try {
+                $(document.body).trigger('processStart');
+
                 const { id, paymentSource: { card: { billingAddress, name } } } = await fastlaneModel.getPaymentToken(),
                     data = {
                         nonce: id,
@@ -66,7 +68,7 @@ define([
                 mappedAddress.firstname = firstname;
                 mappedAddress.lastname = lastname.join(' ');
 
-                quote.billingAddress(mappedAddress);
+                quote.billingAddress({...mappedAddress, street: Object.values(mappedAddress.street)});
 
                 // Override all values of the Braintree billing address with the Fastlane values.
                 Object.keys(braintreeBillingAddress).forEach((addressKey) => {
@@ -78,6 +80,8 @@ define([
                     braintreeBillingAddress
                 );
 
+                $(document.body).trigger('processStop');
+
                 if (this.isBillingAddressValid()) {
                     this.clientConfig.onPaymentMethodReceived(data);
                 } else {
@@ -87,10 +91,18 @@ define([
                     });
                 }
             } catch (error) {
+                $(document.body).trigger('processStop');
                 this.isProcessing = false;
-                messageList.addErrorMessage({
-                    message: $t('The selected billing address is not available to be used. Please enter a new one.')
-                });
+
+                if (error.name === 'paypal_fastlane:address_unavailable') {
+                    messageList.addErrorMessage({
+                        message: $t('The selected billing address is not available to be used. Please enter a new one.')
+                    });
+                } else if (error.name === 'paypal_fastlane:undefined_component') {
+                    messageList.addErrorMessage({
+                        message: $t('An unexpected error occured. Please refresh the page and try again.')
+                    });
+                }
             }
 
             return false;
