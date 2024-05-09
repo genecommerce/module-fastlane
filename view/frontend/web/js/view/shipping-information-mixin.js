@@ -1,11 +1,17 @@
 define([
+    'PayPal_Fastlane/js/helpers/is-fastlane-available',
     'PayPal_Fastlane/js/model/fastlane'
-], function (fastlaneModel) {
+], function (isFastlaneAvailable, fastlaneModel) {
     'use strict';
 
     var mixin = {
         initialize: function () {
             this._super();
+
+            // Early return if Fastlane is not available
+            if (!isFastlaneAvailable()) {
+                return;
+            }
 
             fastlaneModel.setup();
 
