@@ -39,7 +39,7 @@ define([
          * @returns {string}
          */
         getClientToken: function () {
-            return window.checkoutConfig.payment.braintree.clientToken;
+            return window.checkoutConfig.payment?.braintree?.clientToken;
         },
 
         /**
@@ -50,8 +50,16 @@ define([
          * @returns {Promise}
          */
         createClientInstance: async function () {
+            const clientToken = this.getClientToken();
+
+            // If we haven't got a client Token available then set the instance to false and return.
+            if (!clientToken) {
+                this.clientInstance = false;
+                return this.clientInstance;
+            }
+
             this.clientInstance = await client.create({
-                authorization: this.getClientToken()
+                authorization: clientToken
             });
 
             return this.createDataCollectorInstance(this.clientInstance);
@@ -86,6 +94,11 @@ define([
             window.braintree.hostedFields = hostedFields;
             window.braintree.fastlane = braintreeFastlane;
 
+            // Return early if we haven't got a client instance.
+            if (!this.clientInstance) {
+                return this.clientInstance;
+            }
+
             return await window.braintree.fastlane.create({
                 authorization: this.getClientToken(),
                 cardOptions: {
@@ -108,7 +121,7 @@ define([
          */
         setup: async function () {
             // If the Fastlane instance has already been creates then immediately return a completed promise.
-            if (this.fastlaneInstance) {
+            if (this.fastlaneInstance !== null) {
                 return Promise.resolve();
             }
 
@@ -122,11 +135,11 @@ define([
                 // Fastlane requires a localStorage key set to determine which environment to use.
                 window.localStorage.setItem('axoEnv', window.checkoutConfig.payment?.braintree?.environment);
 
-                if (!this.clientInstance) {
+                if (this.clientInstance === null) {
                     await this.createClientInstance();
                 }
 
-                if (!this.fastlaneInstance) {
+                if (this.fastlaneInstance === null) {
                     this.fastlaneInstance = await this.createFastlaneInstance();
                 }
 
@@ -146,6 +159,11 @@ define([
          * @returns {void}
          */
         lookupCustomerByEmail: async function (email) {
+            // Early return if we haven't run setup and got a valid Fastlane instance.
+            if (!this.fastlaneInstance) {
+                return;
+            }
+
             $(document.body).trigger('processStart');
 
             // When we perform another lookup destroy all existing data.
@@ -173,6 +191,11 @@ define([
          * @returns {void}
          */
         triggerAuthenticationFlow: async function () {
+            // Early return if we haven't run setup and got a valid Fastlane instance.
+            if (!this.fastlaneInstance) {
+                return;
+            }
+
             $(document.body).trigger('processStart');
             const { profileData }
                 = await this.fastlaneInstance.identity.triggerAuthenticationFlow(this.customerContextId);
@@ -196,27 +219,30 @@ define([
          * @returns {void}
          */
         renderFastlanePaymentComponent: async function (selector) {
-            if (this.fastlaneInstance) {
-                const fields = {
-                        phoneNumber: {
-                            prefill: this.profileData()?.shippingAddress?.phoneNumber
-                            || quote.billingAddress().telephone || ''
-                        }
-                    },
-                    shippingAddress = mapAddressToFastlane(quote.shippingAddress()),
-                    styles = getStyles();
-
-                // Add the card holder name field if enabled in config.
-                if (window.checkoutConfig.fastlane.show_cardholder_name) {
-                    fields.cardholderName = {
-                        prefill: `${shippingAddress.firstName} ${shippingAddress.lastName}`
-                    };
-                }
-
-                this.fastlanePaymentComponent = await this.fastlaneInstance
-                    .FastlanePaymentComponent({ fields, shippingAddress, styles });
-                this.fastlanePaymentComponent.render(selector);
+            // Early return if we haven't run setup and got a valid Fastlane instance.
+            if (!this.fastlaneInstance) {
+                return;
             }
+
+            const fields = {
+                    phoneNumber: {
+                        prefill: this.profileData()?.shippingAddress?.phoneNumber
+                        || quote.billingAddress().telephone || ''
+                    }
+                },
+                shippingAddress = mapAddressToFastlane(quote.shippingAddress()),
+                styles = getStyles();
+
+            // Add the card holder name field if enabled in config.
+            if (window.checkoutConfig.fastlane.show_cardholder_name) {
+                fields.cardholderName = {
+                    prefill: `${shippingAddress.firstName} ${shippingAddress.lastName}`
+                };
+            }
+
+            this.fastlanePaymentComponent = await this.fastlaneInstance
+                .FastlanePaymentComponent({ fields, shippingAddress, styles });
+            this.fastlanePaymentComponent.render(selector);
         },
 
         /**
@@ -228,20 +254,23 @@ define([
          * @returns {void}
          */
         displayChangeShipping: async function () {
-            if (this.fastlaneInstance.profile) {
+            // Early return if we haven't run setup and got a valid Fastlane instance.
+            if (!this.fastlaneInstance?.profile) {
+                return;
+            }
+
+            $(document.body).trigger('processStart');
+
+            const {
+                selectionChanged,
+                selectedAddress
+            } = await this.fastlaneInstance.profile.showShippingAddressSelector();
+
+            $(document.body).trigger('processStop');
+
+            if (selectionChanged) {
                 $(document.body).trigger('processStart');
-
-                const {
-                    selectionChanged,
-                    selectedAddress
-                } = await this.fastlaneInstance.profile.showShippingAddressSelector();
-
-                $(document.body).trigger('processStop');
-
-                if (selectionChanged) {
-                    $(document.body).trigger('processStart');
-                    this.processUserData({ shippingAddress: selectedAddress });
-                }
+                this.processUserData({ shippingAddress: selectedAddress });
             }
         },
 
@@ -251,12 +280,15 @@ define([
          * @returns {void}
          */
         renderFastlaneWatermarkComponent: async function (selector) {
-            if (this.fastlaneInstance) {
-                this.fastlaneWatermarkComponent = await this.fastlaneInstance.FastlaneWatermarkComponent({
-                    includeAdditionalInfo: true
-                });
-                this.fastlaneWatermarkComponent.render(selector);
+            // Early return if we haven't run setup and got a valid Fastlane instance.
+            if (!this.fastlaneInstance) {
+                return;
             }
+
+            this.fastlaneWatermarkComponent = await this.fastlaneInstance.FastlaneWatermarkComponent({
+                includeAdditionalInfo: true
+            });
+            this.fastlaneWatermarkComponent.render(selector);
         },
 
         /**
