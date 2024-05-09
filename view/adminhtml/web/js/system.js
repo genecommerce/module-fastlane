@@ -54,18 +54,20 @@ require(['jquery'], function ($) {
                 '#payment_us_braintree_section_braintree_paypal_fastlane_braintree_fastlane_styling_braintree_fastlane_styling_root_text_color',
                 '#payment_us_braintree_section_braintree_paypal_fastlane_braintree_fastlane_styling_braintree_fastlane_styling_input_background_color',
                 '#payment_us_braintree_section_braintree_paypal_fastlane_braintree_fastlane_styling_braintree_fastlane_styling_input_border_color',
-                '#payment_us_braintree_section_braintree_paypal_fastlane_braintree_fastlane_styling_braintree_fastlane_styling_input_focus_border_color'
+                '#payment_us_braintree_section_braintree_paypal_fastlane_braintree_fastlane_styling_braintree_fastlane_styling_input_focus_border_color',
+                '#payment_us_braintree_section_braintree_paypal_fastlane_braintree_fastlane_styling_braintree_fastlane_styling_input_text_color'
             ];
             /* eslint-enable max-len */
 
             $(colorFields).each((index, colorField) => {
                 const $colorPicker = $('<input type="color" />'),
-                    $colorField = $(colorField);
+                    $colorField = $(colorField),
+                    placeholderValue =  $colorField.attr('placeholder');
 
-                $colorField.on('change', (event) => $colorPicker.val(event.target.value));
+                $colorField.on('change', (event) => $colorPicker.val(event.target.value || placeholderValue));
                 $colorPicker.on('input', (event) => $colorField.val(event.target.value));
 
-                $colorPicker.val($colorField.val() || $colorField.attr('placeholder'));
+                $colorPicker.val($colorField.val() || placeholderValue);
                 $colorPicker.insertAfter(colorField);
             });
         };
