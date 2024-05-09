@@ -227,7 +227,7 @@ define([
             const fields = {
                     phoneNumber: {
                         prefill: this.profileData()?.shippingAddress?.phoneNumber
-                        || quote.billingAddress().telephone || ''
+                        || quote.shippingAddress().telephone || ''
                     }
                 },
                 shippingAddress = mapAddressToFastlane(quote.shippingAddress()),
@@ -376,7 +376,7 @@ define([
                 'shippingAddress',
                 address
             );
-            quote.shippingAddress(address);
+            quote.shippingAddress({...address, street: Object.values(address.street)});
         },
 
         /**
@@ -385,9 +385,14 @@ define([
          * @returns {Promise}
          */
         getPaymentToken: function () {
-            if (this.fastlanePaymentComponent) {
-                return this.fastlanePaymentComponent.getPaymentToken();
+            if (!this.fastlanePaymentComponent) {
+                const error = new Error();
+
+                error.name = 'paypal_fastlane:undefined_component';
+                throw error;
             }
+
+            return this.fastlanePaymentComponent.getPaymentToken();
         }
     };
 });
