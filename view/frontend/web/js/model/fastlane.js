@@ -224,21 +224,18 @@ define([
                 return;
             }
 
-            const fields = {
+            const shippingAddress = mapAddressToFastlane(quote.shippingAddress()),
+                fields = {
                     phoneNumber: {
                         prefill: this.profileData()?.shippingAddress?.phoneNumber
                         || quote.shippingAddress().telephone || ''
+                    },
+                    cardholderName: {
+                        enabled: window.checkoutConfig.fastlane.show_cardholder_name,
+                        prefill: `${shippingAddress.firstName} ${shippingAddress.lastName}`
                     }
                 },
-                shippingAddress = mapAddressToFastlane(quote.shippingAddress()),
                 styles = getStyles();
-
-            // Add the card holder name field if enabled in config.
-            if (window.checkoutConfig.fastlane.show_cardholder_name) {
-                fields.cardholderName = {
-                    prefill: `${shippingAddress.firstName} ${shippingAddress.lastName}`
-                };
-            }
 
             this.fastlanePaymentComponent = await this.fastlaneInstance
                 .FastlanePaymentComponent({ fields, shippingAddress, styles });
