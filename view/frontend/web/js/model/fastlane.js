@@ -31,6 +31,7 @@ define([
         fastlaneWatermarkComponent: null,
         deviceData: null,
         runningSetup: null,
+        customerContextId: null,
         profileData: ko.observable(null),
 
         /**
@@ -222,6 +223,12 @@ define([
             // Early return if we haven't run setup and got a valid Fastlane instance.
             if (!this.fastlaneInstance) {
                 return;
+            }
+
+            // If there is no customer context ID they must have reloaded on the payment page so trigger the
+            // authentication here again.
+            if (this.customerContextId === null) {
+                await this.lookupCustomerByEmail(quote.guestEmail);
             }
 
             const shippingAddress = mapAddressToFastlane(quote.shippingAddress()),
