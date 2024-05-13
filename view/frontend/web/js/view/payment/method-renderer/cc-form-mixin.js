@@ -1,4 +1,5 @@
 define([
+    'ko',
     'jquery',
     'uiRegistry',
     'mage/translate',
@@ -7,10 +8,12 @@ define([
     'PayPal_Fastlane/js/helpers/is-fastlane-available',
     'PayPal_Fastlane/js/helpers/map-address-to-magento',
     'PayPal_Fastlane/js/model/fastlane'
-], function ($, uiRegistry, $t, quote, messageList, isFastlaneAvailable, mapAddressToMagento, fastlaneModel) {
+], function (ko, $, uiRegistry, $t, quote, messageList, isFastlaneAvailable, mapAddressToMagento, fastlaneModel) {
     'use strict';
 
     var mixin = {
+        isPlaceOrderActionAllowed: ko.observable(true),
+
         defaults: {
             clientConfig: {
                 onReady: async function (context) {
