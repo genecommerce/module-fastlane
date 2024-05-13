@@ -232,7 +232,8 @@ define([
                     },
                     cardholderName: {
                         enabled: window.checkoutConfig.fastlane.show_cardholder_name,
-                        prefill: `${shippingAddress.firstName} ${shippingAddress.lastName}`
+                        prefill: shippingAddress.firstName && shippingAddress.lastName
+                            ? `${shippingAddress.firstName} ${shippingAddress.lastName}` : ''
                     }
                 },
                 styles = getStyles();
