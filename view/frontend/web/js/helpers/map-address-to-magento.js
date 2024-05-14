@@ -26,7 +26,7 @@ define([
                 firstname: address.firstName || '',
                 lastname: address.lastName || '',
                 city: address.locality,
-                telephone: address.phoneNumber || '',
+                telephone: address.phoneNumber || '00000000000',
                 postcode: address.postalCode
             }),
             tempStreet = mappedAddress.street,

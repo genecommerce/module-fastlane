@@ -62,10 +62,13 @@ define([
                     [firstname, ...lastname] = name.split(' '),
                     mappedAddress = mapAddressToMagento(billingAddress),
                     checkoutProvider = uiRegistry.get('checkoutProvider'),
-                    braintreeBillingAddress = checkoutProvider.get('billingAddressbraintree');
+                    braintreeBillingAddress = checkoutProvider.get('billingAddressbraintree'),
+                    shippingAddress = quote.shippingAddress();
 
-                // Fastlane doesn't provide a phone number in the billing address so get it from shipping.
-                mappedAddress.telephone = quote.shippingAddress().telephone;
+                // Fastlane doesn't provide a phone number in the billing address so get it from shipping if available.
+                if (shippingAddress.telephone) {
+                    mappedAddress.telephone = shippingAddress.telephone.telephone;
+                }
 
                 // Add the firstname and lastname as these aren't within the billing address from Fastlane either.
                 mappedAddress.firstname = firstname;
