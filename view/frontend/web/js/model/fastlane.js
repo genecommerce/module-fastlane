@@ -312,6 +312,12 @@ define([
             }
 
             try {
+                // If the quote is virtual then open Braintree and stop.
+                if (quote.isVirtual()) {
+                    selectPaymentMethodAction({ method: 'braintree' });
+                    return;
+                }
+
                 const mappedAddress = mapAddressToMagento(profileData.shippingAddress),
                     shippingAddress = uiRegistry.get('checkout.steps.shipping-step.shippingAddress');
 
