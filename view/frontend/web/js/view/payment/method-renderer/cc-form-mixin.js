@@ -67,7 +67,7 @@ define([
 
                 // Fastlane doesn't provide a phone number in the billing address so get it from shipping if available.
                 if (shippingAddress.telephone) {
-                    mappedAddress.telephone = shippingAddress.telephone.telephone;
+                    mappedAddress.telephone = shippingAddress.telephone;
                 }
 
                 // Add the firstname and lastname as these aren't within the billing address from Fastlane either.
