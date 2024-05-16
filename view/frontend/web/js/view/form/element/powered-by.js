@@ -26,6 +26,9 @@ define([
             this.profileData = fastlaneModel.profileData;
             this.isVisible = ko.observable(false);
 
+            // Add subscription to profile data changes so we try to render again if needed.
+            this.profileData.subscribe(this.renderWatermark.bind(this));
+
             return this;
         },
 
