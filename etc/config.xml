@@ -7,7 +7,6 @@
                 <is_active>0</is_active>
                 <privacy>0</privacy>
                 <show_cardholder_name>0</show_cardholder_name>
-                <insights_enabled>1</insights_enabled>
                 <client_id></client_id>
             </fastlane>
         </payment>

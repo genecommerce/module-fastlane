@@ -33,7 +33,6 @@ var config = {
         'braintreeVenmo': 'https://js.braintreegateway.com/web/3.101.0-fastlane-beta.7.2/js/venmo',
         'braintreeAch': 'https://js.braintreegateway.com/web/3.101.0-fastlane-beta.7.2/js/us-bank-account',
         'braintreeLpm': 'https://js.braintreegateway.com/web/3.101.0-fastlane-beta.7.2/js/local-payment',
-        'braintreeFastlane': 'https://js.braintreegateway.com/web/3.101.0-fastlane-beta.7.2/js/fastlane',
-        'payPalInsights': 'https://www.paypalobjects.com/insights/v1/paypal-insights.sandbox'
+        'braintreeFastlane': 'https://js.braintreegateway.com/web/3.101.0-fastlane-beta.7.2/js/fastlane'
     }
 };
