@@ -6,5 +6,5 @@ define(['jquery'], function ($) {
         const process = show ? 'processStart' : 'processStop';
 
         $(document.body).trigger(process).toggleClass('_has-modal', show);
-    }
+    };
 });
