@@ -1,5 +1,4 @@
 define([
-    'jquery',
     'knockout',
     'uiRegistry',
     'mage/translate',
@@ -14,14 +13,15 @@ define([
     'braintreeDataCollector',
     'braintreeHostedFields',
     'braintreeFastlane',
+    'PayPal_Fastlane/js/helpers/change-loading-state',
     'PayPal_Fastlane/js/helpers/get-allowed-brands',
     'PayPal_Fastlane/js/helpers/get-allowed-locations',
     'PayPal_Fastlane/js/helpers/get-styles',
     'PayPal_Fastlane/js/helpers/map-address-to-fastlane',
     'PayPal_Fastlane/js/helpers/map-address-to-magento'
-], function ($, ko, uiRegistry, $t, quote, selectPaymentMethodAction, setShippingInformationAction, shippingService,
-    stepNavigator, addressList, messageList, client, dataCollector, hostedFields,
-    braintreeFastlane, getAllowedBrands, getAllowedLocations, getStyles, mapAddressToFastlane, mapAddressToMagento) {
+], function (ko, uiRegistry, $t, quote, selectPaymentMethodAction, setShippingInformationAction, shippingService,
+    stepNavigator, addressList, messageList, client, dataCollector, hostedFields, braintreeFastlane,
+    changeLoadingState, getAllowedBrands, getAllowedLocations, getStyles, mapAddressToFastlane, mapAddressToMagento) {
     'use strict';
 
     return {
@@ -165,7 +165,7 @@ define([
                 return;
             }
 
-            $(document.body).trigger('processStart');
+            changeLoadingState(true);
 
             // When we perform another lookup destroy all existing data.
             this.profileData(null);
@@ -174,7 +174,7 @@ define([
             // Lookup the new User.
             const { customerContextId } = await this.fastlaneInstance?.identity?.lookupCustomerByEmail(email) || {};
 
-            $(document.body).trigger('processStop');
+            changeLoadingState(false);
 
             this.customerContextId = customerContextId;
 
@@ -197,11 +197,11 @@ define([
                 return;
             }
 
-            $(document.body).trigger('processStart');
+            changeLoadingState(true);
             const { profileData }
                 = await this.fastlaneInstance.identity.triggerAuthenticationFlow(this.customerContextId);
 
-            $(document.body).trigger('processStop');
+            changeLoadingState(false);
 
             // With the account data push it into the required models.
             if (profileData) {
@@ -264,17 +264,17 @@ define([
                 return;
             }
 
-            $(document.body).trigger('processStart');
+            changeLoadingState(true);
 
             const {
                 selectionChanged,
                 selectedAddress
             } = await this.fastlaneInstance.profile.showShippingAddressSelector();
 
-            $(document.body).trigger('processStop');
+            changeLoadingState(false);
 
             if (selectionChanged) {
-                $(document.body).trigger('processStart');
+                changeLoadingState(true);
                 this.processUserData({ shippingAddress: selectedAddress });
             }
         },
@@ -343,7 +343,7 @@ define([
                             selectPaymentMethodAction({ method: 'braintree' });
                         }
 
-                        $(document.body).trigger('processStop');
+                        changeLoadingState(false);
                     }
                 }.bind(this));
 
@@ -361,7 +361,7 @@ define([
                 messageList.addErrorMessage({
                     message: $t('The selected shipping address is not available to be used. Please enter a new one.')
                 });
-                $(document.body).trigger('processStop');
+                changeLoadingState(false);
             }
         },
 
@@ -371,7 +371,7 @@ define([
          */
         redirectToShipping: function () {
             stepNavigator.setHash('shipping');
-            $(document.body).trigger('processStop');
+            changeLoadingState(false);
         },
 
         /**
