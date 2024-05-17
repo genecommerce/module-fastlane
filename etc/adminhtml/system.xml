@@ -28,14 +28,6 @@
                                 <field id="is_active">1</field>
                             </depends>
                         </field>
-                        <field id="client_id" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>Client ID</label>
-                            <config_path>payment/fastlane/client_id</config_path>
-                            <comment><![CDATA[This setting will enable the PayPal insights SDK to receive conversion data in the merchants PYPL dashboard. <a href="https://developer.paypal.com/api/rest/#link-getclientidandclientsecret" target="_blank">Find your client ID.</a>]]></comment>
-                            <depends>
-                                <field id="is_active">1</field>
-                            </depends>
-                        </field>
                         <field id="show_cardholder_name" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Show Cardholder name</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
