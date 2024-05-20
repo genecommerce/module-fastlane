@@ -292,7 +292,7 @@ define([
 
             // Make sure the element still exists.
             if (!document.querySelector(selector)) {
-                return
+                return;
             }
 
             this.fastlaneWatermarkComponent = await this.fastlaneInstance.FastlaneWatermarkComponent({
