@@ -40,7 +40,7 @@
 
                         <group id="braintree_fastlane_styling" translate="label comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="50">
                             <label>Advanced Style Settings (optional)</label>
-                            <comment><![CDATA[Leave the default styling, or customize how Fastlane looks on your website. See <a href="https://developer.paypal.com/limited-release/accelerated-checkout-bt" target="_blank">PayPal’s developer docs</a> for info.]]></comment>
+                            <comment><![CDATA[Leave the default styling, or customize how Fastlane looks on your website. Styles that don't meet accessibility guidelines will revert to the defaults. See <a href="https://developer.paypal.com/limited-release/accelerated-checkout-bt" target="_blank">PayPal’s developer docs</a> for info.]]></comment>
                             <fieldset_css>fastlane-styling-section</fieldset_css>
                             <depends>
                                 <field id="is_active">1</field>
