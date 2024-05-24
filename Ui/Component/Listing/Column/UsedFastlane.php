@@ -1,45 +1,46 @@
 <?php
 
-declare(strict_types=1);
-
 namespace PayPal\Fastlane\Ui\Component\Listing\Column;
 
-use Magento\Framework\Data\OptionSourceInterface;
+use \Magento\Framework\View\Element\UiComponent\ContextInterface;
+use \Magento\Framework\View\Element\UiComponentFactory;
+use \Magento\Sales\Api\OrderRepositoryInterface;
+use Magento\Ui\Component\Listing\Columns\Column;
 
-class UsedFastlane implements OptionSourceInterface
+class UsedFastlane extends Column
 {
-    public const USED_FASTLANE_YES = 'Yes';
-    public const USED_FASTLANE_NO = 'No';
+    protected $orderRepository;
+
+    public function __construct(
+        ContextInterface $context,
+        UiComponentFactory $uiComponentFactory,
+        OrderRepositoryInterface $orderRepository,
+        array $components = [],
+        array $data = []
+    ) {
+        $this->orderRepository = $orderRepository;
+        parent::__construct($context, $uiComponentFactory, $components, $data);
+    }
 
     /**
-     * @var array
-     */
-    private array $options;
-
-    /**
+     * Prepare Data Source
+     *
+     * @param array $dataSource
      * @return array
      */
-    public function toOptionArray(): array
+    public function prepareDataSource(array $dataSource)
     {
-        if (!empty($this->options)) {
-            return $this->options;
+        if (isset($dataSource['data']['items'])) {
+            foreach ($dataSource['data']['items'] as & $item) {
+                $order = $this->orderRepository->get($item["entity_id"]);
+                $additionalInformation = $order->getPayment()->getAdditionalInformation();
+
+                if (isset($additionalInformation['fastlane'])) {
+                    $item[$this->getData('name')] = $additionalInformation['fastlane'];
+                }
+            }
         }
 
-        $this->options = [
-            [
-                'label' => ' ',
-                'value' => '',
-            ],
-            [
-                'label' => self::USED_FASTLANE_YES,
-                'value' => self::USED_FASTLANE_YES,
-            ],
-            [
-                'label' => self::USED_FASTLANE_NO,
-                'value' => self::USED_FASTLANE_NO,
-            ]
-        ];
-
-        return $this->options;
+        return $dataSource;
     }
 }

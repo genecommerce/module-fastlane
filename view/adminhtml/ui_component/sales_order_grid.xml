@@ -4,11 +4,21 @@
         <filters name="listing_filters">
             <filterSelect name="additional_information" provider="${ $.parentName }">
                 <settings>
-                    <options class="PayPal\Fastlane\Ui\Component\Listing\Column\UsedFastlane"/>
+                    <options class="PayPal\Fastlane\Ui\Component\Listing\Column\UsedFastlane\Options"/>
                     <label translate="true">Used Fastlane</label>
                     <dataScope>additional_information</dataScope>
+                    <imports>
+                        <link name="visible">ns = ${ $.ns }, index = ${ $.index }:visible</link>
+                    </imports>
                 </settings>
             </filterSelect>
         </filters>
     </listingToolbar>
+    <columns name="sales_order_columns">
+        <column name="additional_information" class="PayPal\Fastlane\Ui\Component\Listing\Column\UsedFastlane">
+            <settings>
+                <label translate="true">Used Fastlane</label>
+            </settings>
+        </column>
+    </columns>
 </listing>
