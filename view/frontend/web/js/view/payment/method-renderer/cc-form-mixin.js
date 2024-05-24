@@ -134,6 +134,20 @@ define([
             }
 
             return !billingAddress.get('params.invalid');
+        },
+
+        /**
+         * Extends the payment data to indicate Fastlane usage.
+         *
+         * @returns {Object}
+         */
+        getData: function () {
+            const data = this._super();
+
+            // If the User is authenticated with Fastlane then flag it.
+            data['additional_data']['fastlane'] = fastlaneModel.profileData() ? 'Yes' : 'No';
+
+            return data;
         }
     };
 
