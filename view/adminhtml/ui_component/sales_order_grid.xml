@@ -18,6 +18,8 @@
         <column name="additional_information" class="PayPal\Fastlane\Ui\Component\Listing\Column\UsedFastlane">
             <settings>
                 <label translate="true">Used Fastlane</label>
+                <visible>false</visible>
+                <sortable>false</sortable>
             </settings>
         </column>
     </columns>
