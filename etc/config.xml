@@ -4,6 +4,7 @@
     <default>
         <payment>
             <braintree>
+                <privateInfoKeys>avsPostalCodeResponseCode,avsStreetAddressResponseCode,cvvResponseCode,processorAuthorizationCode,processorResponseCode,processorResponseText,liabilityShifted,liabilityShiftPossible,eciFlag,riskDataId,riskDataDecision,transactionSource,fastlane</privateInfoKeys>
                 <paymentInfoKeys>cc_type,cc_number,avsPostalCodeResponseCode,avsStreetAddressResponseCode,cvvResponseCode,processorAuthorizationCode,processorResponseCode,processorResponseText,liabilityShifted,liabilityShiftPossible,eciFlag,riskDataId,riskDataDecision,transactionSource,fastlane</paymentInfoKeys>
             </braintree>
             <fastlane>
