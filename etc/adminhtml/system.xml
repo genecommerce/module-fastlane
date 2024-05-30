@@ -64,6 +64,7 @@
                                 <field id="font_family" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                                     <label>Font Family</label>
                                     <config_path>payment/fastlane/root_font_family</config_path>
+                                    <comment><![CDATA[Only fonts available in your theme will be displayed.]]></comment>
                                 </field>
 
                                 <field id="font_size" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
