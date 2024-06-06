@@ -136,6 +136,8 @@ define([
                 // Fastlane requires a localStorage key set to determine which environment to use.
                 window.localStorage.setItem('axoEnv', window.checkoutConfig.payment?.braintree?.environment);
 
+                this.attachStepsListener();
+
                 if (this.clientInstance === null) {
                     await this.createClientInstance();
                 }
@@ -148,6 +150,23 @@ define([
             });
 
             return this.runningSetup;
+        },
+
+        /**
+         * Attach a listener on the steps so that going to payment page opens Fastlane by default.
+         */
+        attachStepsListener: function () {
+            stepNavigator.steps.subscribe((steps) => {
+                const payment = steps.find(({ code }) => code === 'payment');
+
+                // Check against a few things:
+                // 1. The payment step is visible
+                // 2. The User has authenticated with Fastlane
+                // 3. No other payment method has been selected
+                if (payment.isVisible() && this.profileData() && !quote.paymentMethod()) {
+                    selectPaymentMethodAction({ method: 'braintree' });
+                }
+            });
         },
 
         /**
@@ -343,9 +362,6 @@ define([
                         // If we are on the first step of the checkout then we can skip to the next step.
                         if (stepNavigator.getActiveItemIndex() === 0) {
                             stepNavigator.next();
-
-                            // Automatically select Braintree as the payment method.
-                            selectPaymentMethodAction({ method: 'braintree' });
                         }
 
                         changeLoadingState(false);
