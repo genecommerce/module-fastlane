@@ -2,8 +2,8 @@ define(['uiRegistry'], function (uiRegistry) {
     'use strict';
 
     return function () {
-        const regions = uiRegistry.get('checkoutProvider').get('dictionaries.region_id'),
-            allowedLocations = Object.values(regions).map(({ country_id }) => country_id).filter(Boolean);
+        const countries = uiRegistry.get('checkoutProvider').get('dictionaries.country_id'),
+            allowedLocations = countries.map(({ value }) => value).filter(Boolean);
 
         return allowedLocations;
     };
