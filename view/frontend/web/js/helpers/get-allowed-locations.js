@@ -3,7 +3,7 @@ define(['uiRegistry'], function (uiRegistry) {
 
     return function () {
         const countries = uiRegistry.get('checkoutProvider').get('dictionaries.country_id'),
-            allowedLocations = countries.map(({ value }) => value).filter(Boolean);
+            allowedLocations = countries.map(({ value }) => value).filter((value) => value && value !== 'delimiter');
 
         return allowedLocations;
     };
