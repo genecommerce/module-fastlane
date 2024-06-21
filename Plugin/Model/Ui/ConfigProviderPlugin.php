@@ -80,7 +80,7 @@ class ConfigProviderPlugin
                 $params[PaymentDataBuilder::MERCHANT_ACCOUNT_ID] = $merchantAccountId;
             }
 
-            $params[self::DOMAINS] = [$this->httpRequest->getServer('SERVER_NAME')];
+            $params[self::DOMAINS] = [$this->httpRequest->getServer('HTTP_HOST')];
 
             $result = $this->adapter->generate($params);
         }
