@@ -3,6 +3,7 @@ namespace PayPal\Fastlane\Plugin\Model\Ui;
 
 use Magento\Customer\Model\Session;
 use Magento\Framework\App\Request\Http;
+use Magento\Store\Model\StoreManagerInterface;
 use PayPal\Braintree\Gateway\Request\PaymentDataBuilder;
 use PayPal\Braintree\Gateway\Config\Config as BraintreeConfig;
 use PayPal\Fastlane\Model\Adapter\BraintreeAdapter;
@@ -41,24 +42,32 @@ class ConfigProviderPlugin
     private Http $httpRequest;
 
     /**
+     * @var StoreManagerInterface
+     */
+    private StoreManagerInterface $storeManager;
+
+    /**
      * @param BraintreeConfig $braintreeConfig
      * @param BraintreeAdapter $adapter
      * @param ConfigProvider $configProvider
      * @param Session $customerSession
      * @param Http $httpRequest
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         BraintreeConfig $braintreeConfig,
         BraintreeAdapter $adapter,
         ConfigProvider $configProvider,
         Session $customerSession,
-        Http $httpRequest
+        Http $httpRequest,
+        StoreManagerInterface $storeManager
     ) {
         $this->braintreeConfig = $braintreeConfig;
         $this->adapter = $adapter;
         $this->configProvider = $configProvider;
         $this->customerSession = $customerSession;
         $this->httpRequest = $httpRequest;
+        $this->storeManager = $storeManager;
     }
 
     /**
@@ -72,7 +81,8 @@ class ConfigProviderPlugin
      */
     public function afterGetClientToken(BraintreeConfigProvider $subject, $result)
     {
-        if ($this->configProvider->isPayPalFastlaneActive()
+        $storeId = $this->storeManager->getStore()->getId();
+        if ($this->configProvider->isPayPalFastlaneActive($storeId)
             && !$this->customerSession->isLoggedIn()
         ) {
             $merchantAccountId = $this->braintreeConfig->getMerchantAccountId();
