@@ -1,6 +1,6 @@
 {
     "name": "paypal/module-fastlane",
-    "description": "Implementation of PayPal Fastlane",
+    "description": "Implementation of Fastlane by PayPal",
     "type": "magento2-module",
     "license": "proprietary",
     "version": "0.1",
@@ -9,7 +9,12 @@
         "magento/framework": "*",
         "magento/module-checkout": "*",
         "paypal/module-braintree-core": "*",
-        "phpcompatibility/php-compatibility": "*"
+        "phpcompatibility/php-compatibility": "*",
+        "ext-xmlwriter": "*",
+        "ext-openssl": "*",
+        "ext-dom": "*",
+        "ext-hash": "*",
+        "ext-curl": "*"
     },
     "autoload": {
         "files": [
