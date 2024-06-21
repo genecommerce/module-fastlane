@@ -5,7 +5,7 @@ use Magento\Customer\Model\Session;
 use Magento\Framework\App\Request\Http;
 use PayPal\Braintree\Gateway\Request\PaymentDataBuilder;
 use PayPal\Braintree\Gateway\Config\Config as BraintreeConfig;
-use PayPal\Braintree\Model\Adapter\BraintreeAdapter;
+use PayPal\Fastlane\Model\Adapter\BraintreeAdapter;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use PayPal\Braintree\Model\Ui\ConfigProvider as BraintreeConfigProvider;
@@ -23,7 +23,7 @@ class ConfigProviderPlugin
     /**
      * @var BraintreeAdapter
      */
-    private BraintreeAdapter $braintreeAdapter;
+    private BraintreeAdapter $adapter;
 
     /**
      * @var ConfigProvider
@@ -55,14 +55,14 @@ class ConfigProviderPlugin
         Http $httpRequest
     ) {
         $this->braintreeConfig = $braintreeConfig;
-        $this->braintreeAdapter = $adapter;
+        $this->adapter = $adapter;
         $this->configProvider = $configProvider;
         $this->customerSession = $customerSession;
         $this->httpRequest = $httpRequest;
     }
 
     /**
-     * Generate a new client token with domain parameter
+     * Generate a new client token with 'domains' parameter
      *
      * @param BraintreeConfigProvider $subject
      * @param $result
@@ -82,7 +82,7 @@ class ConfigProviderPlugin
 
             $params[self::DOMAINS] = [$this->httpRequest->getServer('SERVER_NAME')];
 
-            $result = $this->braintreeAdapter->generate($params);
+            $result = $this->adapter->generate($params);
         }
 
         return $result;
