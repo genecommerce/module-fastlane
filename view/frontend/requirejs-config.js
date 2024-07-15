@@ -7,6 +7,9 @@ var config = {
             'Magento_Checkout/js/view/shipping-information': {
                 'PayPal_Fastlane/js/view/shipping-information-mixin': true
             },
+            'PayPal_Braintree/js/view/payment/adapter': {
+                'PayPal_Fastlane/js/view/payment/adapter-mixin': true
+            },
             'PayPal_Braintree/js/view/payment/method-renderer/cc-form': {
                 'PayPal_Fastlane/js/view/payment/method-renderer/cc-form-mixin': true
             },
