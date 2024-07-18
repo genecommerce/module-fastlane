@@ -36,6 +36,7 @@ var config = {
         'braintreeVenmo': 'https://js.braintreegateway.com/web/3.101.0-fastlane-beta.7.2/js/venmo',
         'braintreeAch': 'https://js.braintreegateway.com/web/3.101.0-fastlane-beta.7.2/js/us-bank-account',
         'braintreeLpm': 'https://js.braintreegateway.com/web/3.101.0-fastlane-beta.7.2/js/local-payment',
-        'braintreeFastlane': 'https://js.braintreegateway.com/web/3.101.0-fastlane-beta.7.2/js/fastlane'
+        'braintreeFastlane': 'https://js.braintreegateway.com/web/3.101.0-fastlane-beta.7.2/js/fastlane',
+        'axo': 'https://www.paypalobjects.com/connect-boba/axo'
     }
 };

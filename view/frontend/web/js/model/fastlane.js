@@ -18,10 +18,11 @@ define([
     'PayPal_Fastlane/js/helpers/get-allowed-locations',
     'PayPal_Fastlane/js/helpers/get-styles',
     'PayPal_Fastlane/js/helpers/map-address-to-fastlane',
-    'PayPal_Fastlane/js/helpers/map-address-to-magento'
+    'PayPal_Fastlane/js/helpers/map-address-to-magento',
+    'axo'
 ], function (ko, uiRegistry, $t, quote, selectPaymentMethodAction, setShippingInformationAction, shippingService,
-    stepNavigator, addressList, messageList, client, dataCollector, hostedFields, braintreeFastlane,
-    changeLoadingState, getAllowedBrands, getAllowedLocations, getStyles, mapAddressToFastlane, mapAddressToMagento) {
+    stepNavigator, addressList, messageList, client, dataCollector, hostedFields, braintreeFastlane, changeLoadingState,
+    getAllowedBrands, getAllowedLocations, getStyles, mapAddressToFastlane, mapAddressToMagento, axo) {
     'use strict';
 
     return {
@@ -94,6 +95,7 @@ define([
             window.braintree = window.braintree || {};
             window.braintree.hostedFields = hostedFields;
             window.braintree.fastlane = braintreeFastlane;
+            window.braintree.fastlane.create = axo.Fastlane.create;
 
             // Return early if we haven't got a client instance.
             if (!this.clientInstance) {
@@ -101,16 +103,19 @@ define([
             }
 
             return await window.braintree.fastlane.create({
-                authorization: this.getClientToken(),
-                cardOptions: {
-                    allowedBrands: getAllowedBrands()
-                },
-                client: this.clientInstance,
-                deviceData: this.deviceData,
-                shippingAddressOptions: {
-                    allowedLocations: getAllowedLocations()
-                },
-                styles: getStyles()
+                platformOptions: {
+                    authorization: this.getClientToken(),
+                    cardOptions: {
+                        allowedBrands: getAllowedBrands()
+                    },
+                    client: this.clientInstance,
+                    deviceData: this.deviceData,
+                    shippingAddressOptions: {
+                        allowedLocations: getAllowedLocations()
+                    },
+                    styles: getStyles(),
+                    platform: 'BT'
+                }
             });
         },
 
