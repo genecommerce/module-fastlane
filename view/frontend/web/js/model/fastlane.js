@@ -21,8 +21,8 @@ define([
     'PayPal_Fastlane/js/helpers/map-address-to-magento',
     'axo'
 ], function (ko, uiRegistry, $t, quote, selectPaymentMethodAction, setShippingInformationAction, shippingService,
-    stepNavigator, addressList, messageList, client, dataCollector, hostedFields, braintreeFastlane,
-    changeLoadingState, getAllowedBrands, getAllowedLocations, getStyles, mapAddressToFastlane, mapAddressToMagento, axo) {
+    stepNavigator, addressList, messageList, client, dataCollector, hostedFields, braintreeFastlane, changeLoadingState,
+    getAllowedBrands, getAllowedLocations, getStyles, mapAddressToFastlane, mapAddressToMagento, axo) {
     'use strict';
 
     return {
