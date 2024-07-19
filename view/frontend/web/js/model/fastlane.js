@@ -189,22 +189,27 @@ define([
                 return;
             }
 
-            changeLoadingState(true);
+            try {
+                changeLoadingState(true);
 
-            // When we perform another lookup destroy all existing data.
-            this.profileData(null);
-            this.customerContextId = null;
+                // When we perform another lookup destroy all existing data.
+                this.profileData(null);
+                this.customerContextId = null;
 
-            // Lookup the new User.
-            const { customerContextId } = await this.fastlaneInstance?.identity?.lookupCustomerByEmail(email) || {};
+                // Lookup the new User.
+                const { customerContextId } = await this.fastlaneInstance?.identity?.lookupCustomerByEmail(email) || {};
 
-            changeLoadingState(false);
+                changeLoadingState(false);
 
-            this.customerContextId = customerContextId;
+                this.customerContextId = customerContextId;
 
-            // If we have do have an account then trigger the authentication.
-            if (this.customerContextId) {
-                return this.triggerAuthenticationFlow();
+                // If we have do have an account then trigger the authentication.
+                if (this.customerContextId) {
+                    return this.triggerAuthenticationFlow();
+                }
+            } catch (error) {
+                console.warn(error);
+                changeLoadingState(false);
             }
         },
 
