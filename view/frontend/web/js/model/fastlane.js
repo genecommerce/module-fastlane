@@ -103,19 +103,19 @@ define([
             }
 
             return await window.braintree.fastlane.create({
+                cardOptions: {
+                    allowedBrands: getAllowedBrands()
+                },
+                shippingAddressOptions: {
+                    allowedLocations: getAllowedLocations()
+                },
                 platformOptions: {
                     authorization: this.getClientToken(),
-                    cardOptions: {
-                        allowedBrands: getAllowedBrands()
-                    },
                     client: this.clientInstance,
                     deviceData: this.deviceData,
-                    shippingAddressOptions: {
-                        allowedLocations: getAllowedLocations()
-                    },
-                    styles: getStyles(),
                     platform: 'BT'
-                }
+                },
+                styles: getStyles(),
             });
         },
 

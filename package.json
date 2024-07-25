@@ -8,7 +8,6 @@
     "lint": "eslint . --rulesdir ../../../vendor/magento/magento-coding-standard/eslint/rules",
     "lint-fix": "eslint . --rulesdir ../../../vendor/magento/magento-coding-standard/eslint/rules --fix"
   },
-  "license": "proprietary",
   "devDependencies": {
     "eslint": "^8.50.0"
   }
