@@ -28,7 +28,7 @@
                                 <field id="is_active">1</field>
                             </depends>
                         </field>
-                        <field id="show_cardholder_name" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="show_cardholder_name" translate="label" type="select" sortOrder="40" showInDefault="0" showInWebsite="0" showInStore="0">
                             <label>Show Cardholder name</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                             <config_path>payment/fastlane/show_cardholder_name</config_path>
