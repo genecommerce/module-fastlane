@@ -267,7 +267,9 @@ define([
                         || quote.shippingAddress().telephone || ''
                     },
                     cardholderName: {
-                        enabled: window.checkoutConfig.fastlane.show_cardholder_name,
+                        // Enabled flag currently not available within Fastlane SDK but leaving functionality
+                        // in as it will be in a later release.
+                        // enabled: window.checkoutConfig.fastlane.show_cardholder_name,
                         prefill: shippingAddress.firstName && shippingAddress.lastName
                             ? `${shippingAddress.firstName} ${shippingAddress.lastName}` : ''
                     }
