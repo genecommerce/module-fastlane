@@ -115,7 +115,7 @@ define([
                     deviceData: this.deviceData,
                     platform: 'BT'
                 },
-                styles: getStyles(),
+                styles: getStyles()
             });
         },
 
