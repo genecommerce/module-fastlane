@@ -1,9 +1,9 @@
 {
     "name": "paypal/module-fastlane",
-    "description": "Implementation of Fastlane by PayPal",
+    "description": "Implementation of Fastlane By PayPal.",
     "type": "magento2-module",
     "license": "proprietary",
-    "version": "0.1",
+    "version": "1.0.0",
     "require": {
         "php": "~8.1.0||~8.2.0",
         "magento/framework": "*",
@@ -23,5 +23,13 @@
         "psr-4": {
             "PayPal\\Fastlane\\": ""
         }
-    }
+    },
+    "authors": [
+        {
+            "name": "Gene Commerce",
+            "email": "fastlane-support@gene.co.uk",
+            "homepage": "https://fastlane-support.gene.co.uk",
+            "role": "Developer"
+        }
+    ]
 }

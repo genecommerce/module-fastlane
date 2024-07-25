@@ -1,7 +1,8 @@
 {
   "name": "@paypal/module-fastlane",
-  "version": "0.0.1",
-  "description": "Implementation of PayPal Fastlane",
+  "version": "1.0.0",
+  "description": "Implementation of Fastlane By PayPal.",
+  "author": "Gene Commerce <fastlane-support@gene.co.uk>",
   "main": ".eslintrc",
   "scripts": {
     "lint": "eslint . --rulesdir ../../../vendor/magento/magento-coding-standard/eslint/rules",
