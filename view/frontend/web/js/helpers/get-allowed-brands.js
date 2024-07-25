@@ -4,12 +4,14 @@ define(function () {
     return function () {
         const braintreeCards = window.checkoutConfig.payment?.braintree?.availableCardTypes || [],
             cardMap = {
-                VI: 'VISA',
-                MC: 'MASTER_CARD',
-                DI: 'DISCOVER',
                 AE: 'AMEX',
+                DI: 'DISCOVER',
+                DN: 'DINERS',
                 JCB: 'JCB',
-                MI: 'MAESTRO'
+                MC: 'MASTER_CARD',
+                MI: 'MAESTRO',
+                UPD: 'UNION',
+                VI: 'VISA'
             };
 
         return braintreeCards.map((card) => cardMap[card] || null).filter(Boolean);
