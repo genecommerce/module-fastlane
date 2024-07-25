@@ -21,22 +21,22 @@ var config = {
 
     map: {
         '*': {
-            braintree: 'https://js.braintreegateway.com/web/3.101.0-fastlane-beta.7.2/js/client.js'
+            braintree: 'https://js.braintreegateway.com/web/3.104.0/js/client.js'
         }
     },
 
     paths: {
         'braintreePayPalCheckout':
-            'https://js.braintreegateway.com/web/3.101.0-fastlane-beta.7.2/js/paypal-checkout',
-        'braintreeHostedFields': 'https://js.braintreegateway.com/web/3.101.0-fastlane-beta.7.2/js/hosted-fields',
-        'braintreeDataCollector': 'https://js.braintreegateway.com/web/3.101.0-fastlane-beta.7.2/js/data-collector',
-        'braintreeThreeDSecure': 'https://js.braintreegateway.com/web/3.101.0-fastlane-beta.7.2/js/three-d-secure',
-        'braintreeApplePay': 'https://js.braintreegateway.com/web/3.101.0-fastlane-beta.7.2/js/apple-pay',
-        'braintreeGooglePay': 'https://js.braintreegateway.com/web/3.101.0-fastlane-beta.7.2/js/google-payment',
-        'braintreeVenmo': 'https://js.braintreegateway.com/web/3.101.0-fastlane-beta.7.2/js/venmo',
-        'braintreeAch': 'https://js.braintreegateway.com/web/3.101.0-fastlane-beta.7.2/js/us-bank-account',
-        'braintreeLpm': 'https://js.braintreegateway.com/web/3.101.0-fastlane-beta.7.2/js/local-payment',
-        'braintreeFastlane': 'https://js.braintreegateway.com/web/3.101.0-fastlane-beta.7.2/js/fastlane',
+            'https://js.braintreegateway.com/web/3.104.0/js/paypal-checkout',
+        'braintreeHostedFields': 'https://js.braintreegateway.com/web/3.104.0/js/hosted-fields',
+        'braintreeDataCollector': 'https://js.braintreegateway.com/web/3.104.0/js/data-collector',
+        'braintreeThreeDSecure': 'https://js.braintreegateway.com/web/3.104.0/js/three-d-secure',
+        'braintreeApplePay': 'https://js.braintreegateway.com/web/3.104.0/js/apple-pay',
+        'braintreeGooglePay': 'https://js.braintreegateway.com/web/3.104.0/js/google-payment',
+        'braintreeVenmo': 'https://js.braintreegateway.com/web/3.104.0/js/venmo',
+        'braintreeAch': 'https://js.braintreegateway.com/web/3.104.0/js/us-bank-account',
+        'braintreeLpm': 'https://js.braintreegateway.com/web/3.104.0/js/local-payment',
+        'braintreeFastlane': 'https://js.braintreegateway.com/web/3.104.0/js/fastlane',
         'axo': 'https://www.paypalobjects.com/connect-boba/axo'
     }
 };
