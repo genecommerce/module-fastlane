@@ -17,7 +17,7 @@ define([
                 region: {
                     region_id: getRegionId(address.countryCodeAlpha2, address.region),
                     region_code: address.region,
-                    region: address.region,
+                    region: address.region
                 },
                 company: address.company || '',
                 country_id: address.countryCodeAlpha2,
