@@ -1,1 +1,5 @@
-<div id="paypal-fastlane-powered-by"></div>
+<div data-bind="attr: { id: id }" class="paypal-fastlane-powered-by" afterRender="renderWatermark">
+    <!-- ko if: (isVisible()) -->
+        <img src="https://www.paypalobjects.com/fastlane-v1/assets/fastlane-with-tooltip_en_sm_light.0808.svg" />
+    <!--/ko-->
+</div>

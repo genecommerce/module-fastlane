@@ -5,28 +5,125 @@
         <section id="payment">
             <group id="braintree_section">
                 <group id="braintree">
-                    <group id="braintree_required">
-                        <field id="is_active" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>Use PayPal Connect</label>
+                    <comment><![CDATA[Accept credit/debit cards and PayPal in your Magento store.<br />
+                    No setup or monthly fees and your customers never leave your store to complete the purchase.<br />
+                    Fastlane by PayPal is now available with your Braintree integration. <a href="#" id="fastlane-learn-more">Learn More</a>]]></comment>
+                    <group id="paypal_fastlane" translate="label comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="30">
+                        <label>Fastlane</label>
+                        <comment><![CDATA[Offer a checkout experience that recognizes guest shoppers and autofills their details so they can pay in seconds. You’ll also need to enable Fastlane in your <a href="https://www.braintreegateway.com" target="_blank">Braintree Dashboard.</a>]]></comment>
+                        <fieldset_css>fastlane-section</fieldset_css>
+                        <frontend_model>Magento\Config\Block\System\Config\Form\Fieldset</frontend_model>
+                        <field id="is_active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Use Fastlane by PayPal</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                            <config_path>payment/paypal_connect/is_active</config_path>
+                            <config_path>payment/fastlane/is_active</config_path>
                         </field>
-                        <field id="show_branding" translate="label" type="select" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>Show PayPal Connect branding</label>
+                        <field id="privacy" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Privacy</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                            <config_path>payment/paypal_connect/show_branding</config_path>
+                            <config_path>payment/fastlane/privacy</config_path>
+                            <comment><![CDATA[This setting will control whether Fastlane branding is shown by email field.]]></comment>
+                            <tooltip>PayPal powers this accelerated checkout solution from Fastlane. Since you’ll share consumers’ email address with PayPal, please consult your legal advisors on the appropriate privacy setting for your business.</tooltip>
                             <depends>
                                 <field id="is_active">1</field>
                             </depends>
                         </field>
-                        <field id="debug_mode" translate="label" type="select" sortOrder="150" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>Debug mode</label>
+                        <field id="show_cardholder_name" translate="label" type="select" sortOrder="40" showInDefault="0" showInWebsite="0" showInStore="0">
+                            <label>Show Cardholder name</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                            <config_path>payment/paypal_connect/debug_mode</config_path>
+                            <config_path>payment/fastlane/show_cardholder_name</config_path>
+                            <comment><![CDATA[This setting will control whether or not the cardholder name is displayed in the card field’s UI]]></comment>
                             <depends>
                                 <field id="is_active">1</field>
                             </depends>
                         </field>
+
+                        <group id="braintree_fastlane_styling" translate="label comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="50">
+                            <label>Advanced Style Settings (optional)</label>
+                            <comment><![CDATA[Leave the default styling, or customize how Fastlane looks on your website. Styles that don't meet accessibility guidelines will revert to the defaults. See <a href="https://developer.paypal.com/limited-release/accelerated-checkout-bt" target="_blank">PayPal’s developer docs</a> for info.]]></comment>
+                            <fieldset_css>fastlane-styling-section</fieldset_css>
+                            <depends>
+                                <field id="is_active">1</field>
+                            </depends>
+
+                            <group id="braintree_fastlane_styling_root" translate="label comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="0">
+                                <label>Root Settings</label>
+                                <comment><![CDATA[These apply to the overall Fastlane checkout module.]]></comment>
+                                <fieldset_css>fastlane-styling-section-root</fieldset_css>
+
+                                <field id="background_color" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                                    <label>Background Color</label>
+                                    <config_path>payment/fastlane/root_background_color</config_path>
+                                </field>
+
+                                <field id="error_color" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                                    <label>Error Color</label>
+                                    <config_path>payment/fastlane/root_error_color</config_path>
+                                </field>
+
+                                <field id="font_family" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                                    <label>Font Family</label>
+                                    <config_path>payment/fastlane/root_font_family</config_path>
+                                    <comment><![CDATA[Only fonts available in your theme will be displayed.]]></comment>
+                                </field>
+
+                                <field id="font_size" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                                    <label>Font Size Base</label>
+                                    <config_path>payment/fastlane/root_font_size</config_path>
+                                </field>
+
+                                <field id="padding" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                                    <label>Padding</label>
+                                    <config_path>payment/fastlane/root_padding</config_path>
+                                </field>
+
+                                <field id="primary_color" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                                    <label>Primary Color</label>
+                                    <config_path>payment/fastlane/root_primary_color</config_path>
+                                </field>
+
+                                <field id="text_color" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                                    <label>Text Color</label>
+                                    <config_path>payment/fastlane/root_text_color</config_path>
+                                </field>
+                            </group>
+
+                            <group id="braintree_fastlane_styling_input" translate="label comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="0">
+                                <label>Input Settings</label>
+                                <comment><![CDATA[These apply to the customer input fields of your Fastlane module.]]></comment>
+                                <fieldset_css>fastlane-styling-section-input</fieldset_css>
+
+                                <field id="background_color" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                                    <label>Background Color</label>
+                                    <config_path>payment/fastlane/input_background_color</config_path>
+                                </field>
+
+                                <field id="border_color" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                                    <label>Border Color</label>
+                                    <config_path>payment/fastlane/input_border_color</config_path>
+                                </field>
+
+                                <field id="border_radius" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                                    <label>Border Radius</label>
+                                    <config_path>payment/fastlane/input_border_radius</config_path>
+                                </field>
+
+                                <field id="border_width" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                                    <label>Border Width</label>
+                                    <config_path>payment/fastlane/input_border_width</config_path>
+                                </field>
+
+                                <field id="focus_border_color" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                                    <label>Focus Border Color</label>
+                                    <config_path>payment/fastlane/input_focus_border_color</config_path>
+                                </field>
+
+                                <field id="text_color" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                                    <label>Text Color Base</label>
+                                    <config_path>payment/fastlane/input_text_color</config_path>
+                                </field>
+                            </group>
+                        </group>
                     </group>
                 </group>
             </group>

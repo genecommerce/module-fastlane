@@ -3,4 +3,12 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="PayPal\Fastlane\Api\ConfigProviderInterface"
                 type="PayPal\Fastlane\Model\ConfigProvider"/>
+
+    <type name="Magento\Checkout\CustomerData\Cart">
+        <plugin name="paypalFastlaneAddGuestMaskedIdToCartData" type="PayPal\Fastlane\Plugin\CustomerData\Cart" />
+    </type>
+
+    <type name="PayPal\Braintree\Model\Ui\ConfigProvider">
+        <plugin name="createClientTokenWithDomainParameter" type="PayPal\Fastlane\Plugin\Model\Ui\ConfigProviderPlugin" />
+    </type>
 </config>

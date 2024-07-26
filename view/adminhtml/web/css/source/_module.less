@@ -1,0 +1,36 @@
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .fastlane-section {
+        .comment {
+            background: ~"url('@{baseDir}PayPal_Fastlane/images/fastlane-by-paypal-logo.svg') no-repeat 0 0 / 18rem auto";
+            min-height: 2em;
+            padding-left: 20rem;
+        }
+    }
+
+    .fastlane-styling-section {
+        .comment {
+            background: none;
+            padding-left: initial;
+        }
+    }
+
+    #payment_us_braintree_section_braintree_paypal_fastlane_braintree_fastlane_styling_braintree_fastlane_styling_root_background_color,
+    #payment_us_braintree_section_braintree_paypal_fastlane_braintree_fastlane_styling_braintree_fastlane_styling_root_error_color,
+    #payment_us_braintree_section_braintree_paypal_fastlane_braintree_fastlane_styling_braintree_fastlane_styling_root_primary_color,
+    #payment_us_braintree_section_braintree_paypal_fastlane_braintree_fastlane_styling_braintree_fastlane_styling_root_text_color,
+    #payment_us_braintree_section_braintree_paypal_fastlane_braintree_fastlane_styling_braintree_fastlane_styling_input_background_color,
+    #payment_us_braintree_section_braintree_paypal_fastlane_braintree_fastlane_styling_braintree_fastlane_styling_input_border_color,
+    #payment_us_braintree_section_braintree_paypal_fastlane_braintree_fastlane_styling_braintree_fastlane_styling_input_focus_border_color,
+    #payment_us_braintree_section_braintree_paypal_fastlane_braintree_fastlane_styling_braintree_fastlane_styling_input_text_color {
+        width: ~'calc(90% - 10px)';
+
+        + input {
+            margin-left: 10px;
+            width: 10%;
+        }
+    }
+}

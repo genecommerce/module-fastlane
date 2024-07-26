@@ -1,22 +1,33 @@
 define([
+    'Magento_Checkout/js/model/step-navigator',
+    'PayPal_Fastlane/js/helpers/is-fastlane-available',
     'PayPal_Fastlane/js/model/fastlane'
-], function (fastlaneModel) {
+], function (stepsNavigator, isFastlaneAvailable, fastlaneModel) {
     'use strict';
 
     var mixin = {
+        shippingServiceSubscription: null,
+
+        /**
+         * Add mixin to the checkEmailAvailability so we can trigger Fastlane.
+         */
         checkEmailAvailability: async function () {
             this._super();
 
-            window.localStorage.setItem('axoEnv', window.checkoutConfig.payment?.braintree?.environment);
+            // Early return if Fastlane is not available
+            if (!isFastlaneAvailable()) {
+                return;
+            }
+
+            // Early return if we are already on the payment page.
+            if (stepsNavigator.getActiveItemIndex() !== 0) {
+                return;
+            }
 
             await fastlaneModel.setup();
-            const { customerContextId } = await fastlaneModel.lookupCustomerByEmail(this.email());
 
-            if (customerContextId) {
-                const { profileData } = await fastlaneModel.triggerAuthenticationFlow(customerContextId);
-
-                console.log(profileData);
-            }
+            // Check the entered email against Fastlane to see if we have an account.
+            fastlaneModel.lookupCustomerByEmail(this.email());
         }
     };
 

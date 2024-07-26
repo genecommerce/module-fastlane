@@ -1,10 +1,15 @@
 define([
+    'knockout',
     'uiComponent',
+    'PayPal_Fastlane/js/helpers/is-branding-enabled',
+    'PayPal_Fastlane/js/helpers/is-fastlane-available',
     'PayPal_Fastlane/js/model/fastlane'
-], function (Component, fastlaneModel) {
+], function (ko, Component, isBrandingEnabled, isFastlaneAvailable, fastlaneModel) {
     'use strict';
 
     return Component.extend({
+        profileData: null,
+
         defaults: {
             template: 'PayPal_Fastlane/form/element/powered-by'
         },
@@ -14,15 +19,42 @@ define([
          *
          * @returns {Object} Chainable.
          */
-        initConfig: async function () {
-            this._super();
+        initialize: function (config) {
+            this._super(config);
 
-            // TODO: Check the window.checkoutConfig to see if branding is enabled.
-            await fastlaneModel.setup();
+            this.id = config.id;
+            this.profileData = fastlaneModel.profileData;
+            this.isVisible = ko.observable(false);
 
-            fastlaneModel.renderConnectWatermarkComponent('#paypal-fastlane-powered-by');
+            // Add subscription to profile data changes so we try to render again if needed.
+            this.profileData.subscribe(this.renderWatermark.bind(this));
 
             return this;
+        },
+
+        shouldRenderWatermark: async function () {
+            // Early return if Fastlane is not available.
+            if (!isFastlaneAvailable()) {
+                return false;
+            }
+
+            await fastlaneModel.setup();
+
+            // Fastlane Watermark should be rendered based on the following:
+            //   - Email watermark is based on the branding configuration
+            //   - All others are based on whether we have profile data
+            const shouldRender = this.id === 'paypal-fastlane-email-watermark' && isBrandingEnabled()
+                || this.id !== 'paypal-fastlane-email-watermark' && !!this.profileData();
+
+            this.isVisible(shouldRender);
+        },
+
+        renderWatermark: async function () {
+            await this.shouldRenderWatermark();
+
+            if (this.isVisible()) {
+                fastlaneModel.renderFastlaneWatermarkComponent(`#${this.id}`);
+            }
         }
     });
 });
