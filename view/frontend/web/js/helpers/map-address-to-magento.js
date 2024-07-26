@@ -42,6 +42,7 @@ define([
         };
         mappedAddress.country_id = mappedAddress.countryId;
         mappedAddress.region_code = mappedAddress.regionCode;
+        mappedAddress.region = mappedAddress.regionCode;
         mappedAddress.region_id = mappedAddress.regionId;
 
         // If the country / region isn't available on this website then throw an error.
