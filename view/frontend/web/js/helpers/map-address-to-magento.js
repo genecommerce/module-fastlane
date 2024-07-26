@@ -16,7 +16,8 @@ define([
         const mappedAddress = Address({
                 region: {
                     region_id: getRegionId(address.countryCodeAlpha2, address.region),
-                    region_code: address.region
+                    region_code: address.region,
+                    region: address.region,
                 },
                 company: address.company || '',
                 country_id: address.countryCodeAlpha2,
@@ -42,7 +43,6 @@ define([
         };
         mappedAddress.country_id = mappedAddress.countryId;
         mappedAddress.region_code = mappedAddress.regionCode;
-        mappedAddress.region = mappedAddress.regionCode;
         mappedAddress.region_id = mappedAddress.regionId;
 
         // If the country / region isn't available on this website then throw an error.
