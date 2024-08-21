@@ -19,6 +19,8 @@ class ConfigProvider implements ConfigProviderInterface
     }
 
     /**
+     * Check if extension in enabled
+     *
      * @param int|string|null $storeId
      * @return bool
      */
@@ -32,6 +34,8 @@ class ConfigProvider implements ConfigProviderInterface
     }
 
     /**
+     * Check if can show privacy
+     *
      * @param int|string|null $storeId
      * @return bool
      */
@@ -44,6 +48,12 @@ class ConfigProvider implements ConfigProviderInterface
         );
     }
 
+    /**
+     * Check if can show cardholders name
+     *
+     * @param int|string|null $storeId
+     * @return bool
+     */
     public function getShowCardholderName(int|string|null $storeId = null): bool
     {
         return $this->scopeConfig->isSetFlag(
@@ -53,6 +63,13 @@ class ConfigProvider implements ConfigProviderInterface
         );
     }
 
+    /**
+     * Get config value by path
+     *
+     * @param string $path
+     * @param int|string|null $storeId
+     * @return string
+     */
     private function getValue($path, int|string|null $storeId = null): string
     {
         return $this->scopeConfig->getValue(
@@ -62,11 +79,23 @@ class ConfigProvider implements ConfigProviderInterface
         ) ?? '';
     }
 
+    /**
+     * Return client ID
+     *
+     * @param int|string|null $storeId
+     * @return string
+     */
     public function getClientId(int|string|null $storeId = null): string
     {
         return $this->getValue(self::XML_PATH_FASTLANE_CLIENT_ID);
     }
 
+    /**
+     * Return an array with styling config
+     *
+     * @param int|string|null $storeId
+     * @return array
+     */
     public function getStyling(int|string|null $storeId = null): array
     {
         return [
