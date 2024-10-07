@@ -18,6 +18,8 @@ class ConfigProvider implements CheckoutConfigProviderInterface
     }
 
     /**
+     * Return an array with fastlane config
+     *
      * @return array
      */
     public function getConfig(): array

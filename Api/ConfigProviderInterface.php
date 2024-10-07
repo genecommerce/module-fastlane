@@ -25,30 +25,40 @@ interface ConfigProviderInterface
     public const XML_PATH_FASTLANE_STYLING_INPUT_TEXT_COLOR = "payment/fastlane/input_text_color";
 
     /**
+     * Check if extension is enabled
+     *
      * @param int|string|null $storeId
      * @return bool
      */
     public function isPayPalFastlaneActive(int|string|null $storeId = null): bool;
 
     /**
+     * Check if can show privacy
+     *
      * @param int|string|null $storeId
      * @return bool
      */
     public function getShowPrivacy(int|string|null $storeId = null): bool;
 
     /**
+     * Check if can show cardholders name
+     *
      * @param int|string|null $storeId
      * @return bool
      */
     public function getShowCardholderName(int|string|null $storeId = null): bool;
 
     /**
+     * Return client ID
+     *
      * @param int|string|null $storeId
      * @return string
      */
     public function getClientId(int|string|null $storeId = null): string;
 
     /**
+     * Return an array with styling config
+     *
      * @param int|string|null $storeId
      * @return array
      */

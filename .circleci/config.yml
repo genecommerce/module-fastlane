@@ -118,17 +118,17 @@ jobs:
           root: .
           paths:
             - ./*
-#  static_tests:
-#    docker:
-#      - image: cimg/php:8.2.15-browsers
-#    working_directory: ~/static-tests
-#    steps:
-#      - attach_workspace:
-#            at: .
-#      - run:
-#          name: PHPCS
-#          command: |
-#            ./vendor/bin/phpcs vendor/paypal/module-fastlane --standard=Magento2 --ignore=vendor,*.css,Test --extensions=php --colors -s -p -v --runtime-set installed_paths vendor/magento/magento-coding-standard,vendor/phpcompatibility/php-compatibility
+  static_tests:
+    docker:
+      - image: cimg/php:8.2.15-browsers
+    working_directory: ~/static-tests
+    steps:
+      - attach_workspace:
+            at: .
+      - run:
+          name: PHPCS
+          command: |
+            ./vendor/bin/phpcs vendor/paypal/module-fastlane --standard=vendor/paypal/module-fastlane/phpcs.xml,Magento2 --ignore=vendor,*.css,Test --colors -s -v --runtime-set installed_paths vendor/magento/magento-coding-standard
 #      - run:
 #          name: PHPStan
 #          command: ./vendor/bin/phpstan analyse

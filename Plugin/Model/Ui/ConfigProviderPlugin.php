@@ -74,7 +74,7 @@ class ConfigProviderPlugin
      * Generate a new client token with 'domains' parameter
      *
      * @param BraintreeConfigProvider $subject
-     * @param $result
+     * @param string $result
      * @return string
      * @throws InputException
      * @throws NoSuchEntityException
